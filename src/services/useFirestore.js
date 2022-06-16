@@ -1,14 +1,13 @@
-import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore"
+import { getFirestore, setDoc, getDocs, collection, doc } from "firebase/firestore";
 import firebaseApp from "./firebase";
 
 const db = getFirestore(firebaseApp);
 const docRef = doc(db, "users");
 
 export default function useFirestore() {
-  const addUser = async (fullName, userID) => {
+  const addUser = async (fullName) => {
     try {
-      return await setDoc(doc(db, "users", userID), {
-        userID,
+      return await setDoc(docRef, {
         fullName,
         toDoes: {}
       });
@@ -18,16 +17,17 @@ export default function useFirestore() {
   };
 
   const getUsers = async () => {
-    const docSnap = await getDoc(docRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log("Document data:", docSnap.data());
-      } else {
-        console.log("No such document!");
-      }
+    const result = [];
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((document) => {
+      result.push({ id: document.id, ...document.data() });
     });
+
+    return result;
   };
 
   return {
-    addUser
+    addUser,
+    getUsers
   };
 }

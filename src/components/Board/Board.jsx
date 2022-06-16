@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import UserItem from "../UserItem/UserItem";
-import users from "../../staticTestData";
+import useFirestore from "../../services/useFirestore";
 import "./Board.scss";
 
 export default function Board() {
+  const users = useSelector((state) => state.users);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { getUsers } = useFirestore();
+
+  useEffect(() => {
+    getUsers().then(console.log);
+  }, []);
 
   function openModal() {
     setIsModalOpen(true);
