@@ -37,19 +37,19 @@
     height: 100%;
     color: getColor("white");
     font-weight: 400;
-  }
 
-  &__title_name {
-    @include flexRow(flex-start, center);
-    width: 60%;
-    height: 100%;
-    padding-left: 16px;
-  }
+    &_name {
+      @include flexRow(flex-start, center);
+      width: 60%;
+      height: 100%;
+      padding-left: 16px;
+    }
 
-  &__title_rate {
-    @include flexRow(flex-start, center);
-    width: 40%;
-    height: 100%;
+    &_rate {
+      @include flexRow(flex-start, center);
+      width: 40%;
+      height: 100%;
+    }
   }
 }
 
