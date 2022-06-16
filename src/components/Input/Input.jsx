@@ -13,7 +13,7 @@ export default function Input() {
   }
 
   function handleOpen() {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   }
 
   function submitToDo() {
