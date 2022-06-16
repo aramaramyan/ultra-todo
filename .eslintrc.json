@@ -47,6 +47,7 @@
     "react/jsx-filename-extension": "warn",
     "react/react-in-jsx-scope": "off",
     "quotes": "off",
-    "eol-last": "off"
+    "eol-last": "off",
+    "comma-dangle": "off"
   }
 }
