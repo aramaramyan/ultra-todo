@@ -1,0 +1,50 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:import/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "import"],
+  "rules": {
+    "indent": ["off"],
+    "no-nested-ternary": "warn",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-wrap-multilines": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/forbid-prop-types": "off",
+    "react/no-danger": "off",
+    "react/jsx-curly-newline": "off",
+    "object-curly-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "arrow-body-style": "off",
+    "function-paren-newline": "off",
+    "operator-linebreak": "off",
+    "import/namespace": "off",
+    "no-confusing-arrow": "off",
+    "no-console": "error",
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "no-tabs": "off",
+    "import/extensions": "off",
+    "react/button-has-type": "warn",
+    "react/jsx-filename-extension": "warn",
+    "react/react-in-jsx-scope": "off"
+  }
+}
