@@ -46,6 +46,7 @@
     "react/button-has-type": "warn",
     "react/jsx-filename-extension": "warn",
     "react/react-in-jsx-scope": "off",
-    "quotes": "off"
+    "quotes": "off",
+    "eol-last": "off"
   }
 }
