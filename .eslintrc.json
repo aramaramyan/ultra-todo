@@ -42,7 +42,7 @@
     "operator-linebreak": "off",
     "import/namespace": "off",
     "no-confusing-arrow": "off",
-    "no-console": "error",
+    "no-console": "off",
     "react/jsx-indent": "off",
     "react/jsx-indent-props": "off",
     "jsx-a11y/mouse-events-have-key-events": "off",
