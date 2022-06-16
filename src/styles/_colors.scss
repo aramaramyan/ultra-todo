@@ -1,0 +1,14 @@
+$colors: (
+        "white": #FFFFFF,
+        "black": #191A1B,
+        "azure": #0085FF,
+        "alice-blue": #F3FBFF,
+        "bubbles": #E7F6FE,
+        "orange": #FC9700,
+        "green": #03BC90,
+        "silver": #C7C7C7
+);
+
+@function getColor($color-name) {
+  @return map-get($colors, $color-name);
+}
