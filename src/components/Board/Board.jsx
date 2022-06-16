@@ -30,13 +30,11 @@ export default function Board() {
             fullName={fullName}
             rate={rate}
             isBlue={i % 2}
-            /* eslint-disable-next-line react/jsx-no-bind */
-            openModal={openModal}
+            openModal={() => openModal()}
           />)}
         </div>
       </div>
-      {/* eslint-disable-next-line react/jsx-no-bind */}
-      {isModalOpen && <Modal closeModal={closeModal} />}
+      {isModalOpen && <Modal closeModal={() => closeModal()} />}
     </div>
   );
 }
