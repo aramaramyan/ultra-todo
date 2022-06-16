@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { func } from "prop-types";
 import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
 import Input from "../Input/Input";
@@ -24,7 +24,10 @@ export default function Modal({ closeModal }) {
   );
 }
 
+Modal.defaultProps = {
+  closeModal: () => {}
+};
+
 Modal.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  closeModal: PropTypes.func
+  closeModal: func
 };
