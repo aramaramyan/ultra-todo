@@ -16,9 +16,14 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "import"],
+  "plugins": [
+    "react",
+    "import"
+  ],
   "rules": {
-    "indent": ["off"],
+    "indent": [
+      "off"
+    ],
     "no-nested-ternary": "warn",
     "import/first": "error",
     "import/newline-after-import": "error",

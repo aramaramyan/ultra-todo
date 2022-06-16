@@ -1,0 +1,75 @@
+.board {
+  position: relative;
+  width: 1120px;
+  height: 580px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.board::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 77px;
+  background: #0085FF;
+}
+.board__body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: 0.6s;
+}
+.board__header {
+  width: 100%;
+  height: 77px;
+  background: #0085FF;
+}
+.board__title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  font-weight: 400;
+}
+.board__title_name {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 60%;
+  height: 100%;
+  padding-left: 16px;
+}
+.board__title_rate {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 300;
+  font-style: normal;
+  line-height: 21px;
+}
+
+.board__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.modal-open {
+  width: 50%;
+}
+
+/*# sourceMappingURL=Board.css.map */
