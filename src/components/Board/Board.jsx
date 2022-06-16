@@ -1,4 +1,6 @@
 import "./Board.scss";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
 
 // const users = [
 //   { id: 1, fullName: "Peter Bishop", rate: 7 },
@@ -13,9 +15,15 @@ import "./Board.scss";
 // ];
 
 export default function Board() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <div className="board">
-      <div className="board__body">
+      <div className={isModalOpen ? "board__body modal-open" : "board__body"}>
         <div className="board__header">
           <div className="board__title title">
             <p className="board__title_name">Name</p>
@@ -24,6 +32,8 @@ export default function Board() {
         </div>
         <div className="board__list" />
       </div>
+      {/* eslint-disable-next-line react/jsx-no-bind */}
+      {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
 }
