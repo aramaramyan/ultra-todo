@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
+import Input from "../Input/Input";
 
 export default function Modal({ closeModal }) {
   return (
     <div className="modal">
       <div className="modal__header">
+        <Input />
         <div
           className="modal__close"
           onClick={closeModal}
