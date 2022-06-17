@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { handleModal, removeCurrentUser, deleteUserLocal, handleLoading } from "../../store/appSlice";
+import { handleModal, removeCurrentUser, deleteUserLocal, handleModalLoading, handleBoardLoading } from "../../store/appSlice";
 import useFirestore from "../../services/useFirestore";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
@@ -10,7 +10,7 @@ import "./Modal.scss";
 
 export default function Modal() {
   const [currentUser] = useSelector((state) => state.app.currentUser);
-  const isLoading = useSelector((state) => state.app.isLoading);
+  const isModalLoading = useSelector((state) => state.app.isModalLoading);
   const { deleteUser } = useFirestore();
   const dispatch = useDispatch();
 
@@ -20,10 +20,10 @@ export default function Modal() {
   }
 
   function delUser() {
-    dispatch(handleLoading(true));
+    dispatch(handleBoardLoading(true));
     deleteUser(currentUser.id).then(() => {
       dispatch(deleteUserLocal(currentUser.id));
-      dispatch(handleLoading(false));
+      dispatch(handleBoardLoading(false));
     });
     closeModal();
   }
@@ -53,7 +53,7 @@ export default function Modal() {
         </div>
       </div>
       <div className="modal__list">
-        {isLoading ? <Loader /> : (
+        {isModalLoading ? <Loader /> : (
           currentUser.toDoesArr.map((todo) => {
             return (
               <ToDoItem

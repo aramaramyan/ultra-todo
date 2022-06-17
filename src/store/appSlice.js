@@ -6,7 +6,8 @@ const appSlice = createSlice({
     users: [],
     currentUser: [],
     isModalOpen: false,
-    isLoading: false
+    isBoardLoading: false,
+    isModalLoading: false
   },
   reducers: {
     setUsers(state, action) {
@@ -45,8 +46,11 @@ const appSlice = createSlice({
     handleModal(state, action) {
       state.isModalOpen = action.payload;
     },
-    handleLoading(state, action) {
-      state.isLoading = action.payload;
+    handleBoardLoading(state, action) {
+      state.isBoardLoading = action.payload;
+    },
+    handleModalLoading(state, action) {
+      state.isModalLoading = action.payload;
     }
   }
 });
@@ -56,10 +60,11 @@ export const {
   handleModal,
   addToDoLocal,
   addUserLocal,
-  handleLoading,
   setCurrentUser,
   deleteUserLocal,
   removeCurrentUser,
-  handleStatusLocal
+  handleStatusLocal,
+  handleBoardLoading,
+  handleModalLoading
 } = appSlice.actions;
 export default appSlice.reducer;

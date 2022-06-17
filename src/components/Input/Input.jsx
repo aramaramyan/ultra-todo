@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { string, array } from "prop-types";
-import { addToDoLocal, handleLoading } from "../../store/appSlice";
+import { addToDoLocal, handleModalLoading } from "../../store/appSlice";
 import getID from "../../helpers/getID";
 import useFirestore from "../../services/useFirestore";
 import plusIcon from "../../icons/plus.svg";
@@ -36,10 +36,10 @@ export default function Input({ userID, allToDoes }) {
       setState("");
       setPlaceHolder("New to-do description");
 
-      dispatch(handleLoading(true));
+      dispatch(handleModalLoading(true));
       addToDo(userID, todo, allToDoes).then(() => {
         dispatch(addToDoLocal(todo));
-        dispatch(handleLoading(false));
+        dispatch(handleModalLoading(false));
       });
       handleOpen();
     } else {

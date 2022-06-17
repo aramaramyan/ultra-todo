@@ -1,20 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
-import { handleLoading, handleStatusLocal } from "../../store/appSlice";
+import { handleModalLoading, handleStatusLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
   const { title, isDone } = todo;
-  const isLoading = useSelector((state) => state.app.isLoading);
+  const isModalLoading = useSelector((state) => state.app.isModalLoading);
   const { handleStatus } = useFirestore();
   const dispatch = useDispatch();
 
   function changeStatus() {
     if (isDone) {
-      dispatch(handleLoading(true));
+      dispatch(handleModalLoading(true));
       handleStatus(userID, todo, false, -1).then(() => {
         const payload = {
           id: todo.id,
@@ -22,11 +22,11 @@ export default function ToDoItem({ userID, todo }) {
           number: -1
         };
 
-        dispatch(handleLoading(false));
+        dispatch(handleModalLoading(false));
         dispatch(handleStatusLocal(payload));
       });
     } else {
-      dispatch(handleLoading(true));
+      dispatch(handleModalLoading(true));
       handleStatus(userID, todo, true, 1).then(() => {
         const payload = {
           id: todo.id,
@@ -34,7 +34,7 @@ export default function ToDoItem({ userID, todo }) {
           number: 1
         };
 
-        dispatch(handleLoading(false));
+        dispatch(handleModalLoading(false));
         dispatch(handleStatusLocal(payload));
       });
     }

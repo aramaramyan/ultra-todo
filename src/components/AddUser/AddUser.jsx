@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import useFirestore from "../../services/useFirestore";
-import { addUserLocal, handleLoading } from "../../store/appSlice";
+import { addUserLocal, handleBoardLoading } from "../../store/appSlice";
 import getID from "../../helpers/getID";
 import checkIcon from "../../icons/check.svg";
 import plusIcon from "../../icons/plus.svg";
@@ -25,13 +25,12 @@ export default function AddUser() {
   }
 
   function submitUser(evt) {
-    console.log(evt);
     evt.preventDefault();
     if (state.trim()) {
       setState("");
       setPlaceHolder("Add new user");
       const userID = getID();
-      dispatch(handleLoading(true));
+      dispatch(handleBoardLoading(true));
 
       addUser(userID, state).then(() => {
         const user = {
@@ -42,7 +41,7 @@ export default function AddUser() {
         };
 
         dispatch(addUserLocal(user));
-        dispatch(handleLoading(false));
+        dispatch(handleBoardLoading(false));
       });
       handleOpen();
     } else {

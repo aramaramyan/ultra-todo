@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsers } from "../../store/appSlice";
 import useFirestore from "../../services/useFirestore";
@@ -12,7 +12,7 @@ import Loader from "../Loader/Loader";
 export default function Board() {
   const users = useSelector((state) => state.app.users);
   const isModalOpen = useSelector((state) => state.app.isModalOpen);
-  const isLoading = useSelector((state) => state.app.isLoading);
+  const isBoardLoading = useSelector((state) => state.app.isBoardLoading);
   const { getUsers } = useFirestore();
   const dispatch = useDispatch();
 
@@ -40,8 +40,7 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {isLoading ? <Loader /> : (
+          {isBoardLoading ? <Loader /> : (
             users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
               <UserItem
                 key={id}
