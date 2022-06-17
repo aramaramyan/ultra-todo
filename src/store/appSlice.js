@@ -17,6 +17,10 @@ const appSlice = createSlice({
     removeCurrentUser(state) {
       state.currentUser = null;
     },
+    addToDoLocal(state, action) {
+      console.log(state.currentUser.toDoes);
+      state.currentUser[0].toDoesArr.push(action.payload);
+    },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
     }
@@ -25,6 +29,7 @@ const appSlice = createSlice({
 
 export const {
   setUsers,
+  addToDoLocal,
   setCurrentUser,
   removeCurrentUser,
   handleModal } = appSlice.actions;

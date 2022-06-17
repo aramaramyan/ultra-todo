@@ -17,7 +17,10 @@ export default function Modal() {
   return (
     <div className="modal">
       <div className="modal__header">
-        <Input />
+        <Input
+          userID={currentUser.id}
+          allToDoes={currentUser.toDoesArr}
+        />
         <div
           className="modal__close"
           onClick={closeModal}
@@ -33,7 +36,7 @@ export default function Modal() {
         {currentUser.toDoesArr.map((todo) => {
           return (
             <ToDoItem
-              key={todo.key}
+              key={todo.id}
               title={todo.title}
               isDone={todo.isDone}
             />
