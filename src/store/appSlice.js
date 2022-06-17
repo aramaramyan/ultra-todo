@@ -12,6 +12,9 @@ const appSlice = createSlice({
     setUsers(state, action) {
       state.users = action.payload;
     },
+    addUserLocal(state, action) {
+      state.users.push(action.payload);
+    },
     setCurrentUser(state, action) {
       state.currentUser = state.users.filter((user) => user.id === action.payload);
     },
