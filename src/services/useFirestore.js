@@ -9,7 +9,8 @@ export default function useFirestore() {
     try {
       return await setDoc(collectionRef, {
         fullName,
-        toDoes: {}
+        toDoes: {},
+        completed: 0
       });
     } catch (err) {
       console.log(err.message);
