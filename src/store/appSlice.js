@@ -19,8 +19,22 @@ const appSlice = createSlice({
       state.currentUser = null;
     },
     addToDoLocal(state, action) {
-      console.log(state.currentUser.toDoes);
       state.currentUser[0].toDoesArr.push(action.payload);
+    },
+    handleStatusLocal(state, action) {
+      state.currentUser[0] = {
+        ...state.currentUser[0],
+        completed: state.currentUser[0].completed + action.payload.number,
+        toDoesArr: state.currentUser[0].toDoesArr.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return {
+              ...todo,
+              isDone: action.payload.status
+            };
+          }
+          return todo;
+        })
+      };
     },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
@@ -37,6 +51,7 @@ export const {
   addToDoLocal,
   handleLoading,
   setCurrentUser,
-  removeCurrentUser
+  removeCurrentUser,
+  handleStatusLocal
 } = appSlice.actions;
 export default appSlice.reducer;

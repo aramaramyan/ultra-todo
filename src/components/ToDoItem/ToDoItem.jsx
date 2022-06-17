@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
-import { handleLoading } from "../../store/appSlice";
+import { handleLoading, handleStatusLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import "./ToDoItem.scss";
@@ -16,12 +16,26 @@ export default function ToDoItem({ userID, todo }) {
     if (isDone) {
       dispatch(handleLoading(true));
       handleStatus(userID, todo, false, -1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: false,
+          number: -1
+        };
+
         dispatch(handleLoading(false));
+        dispatch(handleStatusLocal(payload));
       });
     } else {
       dispatch(handleLoading(true));
       handleStatus(userID, todo, true, 1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: true,
+          number: 1
+        };
+
         dispatch(handleLoading(false));
+        dispatch(handleStatusLocal(payload));
       });
     }
   }
