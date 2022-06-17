@@ -1,4 +1,4 @@
-import { getFirestore, setDoc, getDocs, collection, doc } from "firebase/firestore";
+import { getFirestore, setDoc, getDocs, updateDoc, collection, doc } from "firebase/firestore";
 import firebaseApp from "./firebase";
 
 const db = getFirestore(firebaseApp);
@@ -26,8 +26,19 @@ export default function useFirestore() {
     return result;
   };
 
+  const addToDo = async (userID, todo, allToDoes) => {
+    const userRef = doc(db, "users", userID);
+    await updateDoc(userRef, {
+      toDoes: {
+        ...allToDoes,
+        [todo.id]: todo
+      }
+    });
+  };
+
   return {
     addUser,
-    getUsers
+    getUsers,
+    addToDo
   };
 }
