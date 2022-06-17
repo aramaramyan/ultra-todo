@@ -27,7 +27,7 @@ export default function UserItem({ id, fullName, completed, toDoesLength }) {
       tabIndex={0}
     >
       <p className="user-item__title title">{fullName}</p>
-      <p className="user-item__rate title">{completionRate}</p>
+      <p className="user-item__rate title">{completionRate || 0}</p>
     </div>
   );
 }

@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setUsers } from "../../store/appSlice";
+import useFirestore from "../../services/useFirestore";
 import Modal from "../Modal/Modal";
 import UserItem from "../UserItem/UserItem";
-import useFirestore from "../../services/useFirestore";
-import { setUsers } from "../../store/appSlice";
+import AddUser from "../AddUser/AddUser";
+import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
 import Loader from "../Loader/Loader";
-import AddUser from "../AddUser/AddUser";
 
 export default function Board() {
   const users = useSelector((state) => state.app.users);
   const isModalOpen = useSelector((state) => state.app.isModalOpen);
+  const isLoading = useSelector((state) => state.app.isLoading);
   const { getUsers } = useFirestore();
   const dispatch = useDispatch();
 
@@ -38,15 +40,23 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
-            <UserItem
-              key={id}
-              id={id}
-              fullName={fullName}
-              completed={completed}
-              toDoesLength={toDoesArr.length}
-            />
-          )) : <Loader />}
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {isLoading ? <Loader /> : (
+            users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
+              <UserItem
+                key={id}
+                id={id}
+                fullName={fullName}
+                completed={completed}
+                toDoesLength={toDoesArr.length}
+              />
+            )) : (
+              <div className="no-users">
+                <img src={banIcon} alt="Ban Icon" />
+                <p className="no-users__title title">There are no users</p>
+              </div>
+            )
+          )}
         </div>
         <AddUser />
       </div>

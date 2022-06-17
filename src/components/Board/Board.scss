@@ -16,6 +16,16 @@
     background: getColor("azure");
   }
 
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 77px;
+    background: getColor("azure");
+  }
+
   &__body {
     position: absolute;
     top: 0;
@@ -69,4 +79,22 @@
 
 .modal-open {
   width: 50%;
+}
+
+.no-users {
+  @include flexRow(center, center);
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: getColor("azure");
+  }
+
+  img {
+    width: 36px;
+    height: 36px;
+  }
 }

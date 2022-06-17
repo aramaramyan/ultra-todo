@@ -12,6 +12,15 @@
   height: 77px;
   background: #0085FF;
 }
+.board::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 77px;
+  background: #0085FF;
+}
 .board__body {
   position: absolute;
   top: 0;
@@ -72,6 +81,25 @@
 
 .modal-open {
   width: 50%;
+}
+
+.no-users {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+}
+.no-users__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0085FF;
+}
+.no-users img {
+  width: 36px;
+  height: 36px;
 }
 
 /*# sourceMappingURL=Board.css.map */

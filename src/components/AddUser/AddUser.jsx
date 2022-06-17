@@ -27,6 +27,8 @@ export default function AddUser() {
       setState("");
       setPlaceHolder("Add new user");
       const userID = getID();
+      dispatch(handleLoading(true));
+
       addUser(userID, state).then(() => {
         const user = {
           id: userID,
@@ -35,8 +37,8 @@ export default function AddUser() {
           completed: 0
         };
 
-        dispatch(handleLoading());
         dispatch(addUserLocal(user));
+        dispatch(handleLoading(false));
       });
       handleOpen();
     } else {
