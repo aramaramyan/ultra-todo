@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleModal, removeCurrentUser } from "../../store/appSlice";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
+import Loader from "../Loader/Loader";
 import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
-import Loader from "../Loader/Loader";
 
 export default function Modal() {
   const [currentUser] = useSelector((state) => state.app.currentUser) ?? [];
@@ -40,8 +40,8 @@ export default function Modal() {
             return (
               <ToDoItem
                 key={todo.id}
-                title={todo.title}
-                isDone={todo.isDone}
+                userID={currentUser.id}
+                todo={todo}
               />
             );
           })

@@ -1,4 +1,12 @@
-import { getFirestore, setDoc, getDocs, updateDoc, collection, doc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  updateDoc,
+  increment,
+  collection,
+  getFirestore
+} from "firebase/firestore";
 import firebaseApp from "./firebase";
 
 const db = getFirestore(firebaseApp);
@@ -37,9 +45,21 @@ export default function useFirestore() {
     });
   };
 
+  const handleStatus = async (userID, todo, status, number) => {
+    const userRef = doc(db, "users", userID);
+    await updateDoc(userRef, {
+      completed: increment(number),
+      [`toDoes.${todo.id}`]: {
+        ...todo,
+        isDone: status
+      }
+    });
+  };
+
   return {
+    addToDo,
     addUser,
     getUsers,
-    addToDo
+    handleStatus
   };
 }
