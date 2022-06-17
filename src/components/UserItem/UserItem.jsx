@@ -1,13 +1,14 @@
 import { string, bool } from "prop-types";
 import { useDispatch } from "react-redux";
-import { handleModal } from "../../store/appSlice";
+import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
-export default function UserItem({ fullName, isBlue }) {
+export default function UserItem({ id, fullName, isBlue }) {
   const dispatch = useDispatch();
 
   function handleClick() {
     dispatch(handleModal(true));
+    dispatch(setCurrentUser(id));
   }
 
   return (
@@ -25,11 +26,13 @@ export default function UserItem({ fullName, isBlue }) {
 }
 
 UserItem.defaultProps = {
-  fullName: '',
+  id: "",
+  fullName: "",
   isBlue: false,
 };
 
 UserItem.propTypes = {
+  id: string,
   fullName: string,
   isBlue: bool,
 };

@@ -12,7 +12,7 @@ const appSlice = createSlice({
       state.users = action.payload;
     },
     setCurrentUser(state, action) {
-      state.currentUser = state.filter((user) => user.id !== action.payload);
+      state.currentUser = state.users.filter((user) => user.id === action.payload);
     },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
@@ -20,5 +20,5 @@ const appSlice = createSlice({
   }
 });
 
-export const { setUsers, handleModal } = appSlice.actions;
+export const { setUsers, handleModal, setCurrentUser } = appSlice.actions;
 export default appSlice.reducer;

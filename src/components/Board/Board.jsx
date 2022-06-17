@@ -39,6 +39,7 @@ export default function Board() {
           {users.map(({ id, fullName }, i) => (
             <UserItem
               key={id}
+              id={id}
               fullName={fullName}
               isBlue={i % 2 !== 0}
             />

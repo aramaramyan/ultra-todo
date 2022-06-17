@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleModal } from "../../store/appSlice";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
@@ -6,6 +6,7 @@ import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
 
 export default function Modal() {
+  const [currentUser] = useSelector((state) => state.app.currentUser);
   const dispatch = useDispatch();
 
   function closeModal() {
@@ -26,7 +27,7 @@ export default function Modal() {
           <img src={closeIcon} alt="Close Icon" />
         </div>
       </div>
-      <p className="modal__title title">To-do list for name</p>
+      <p className="modal__title title">To-do list for {currentUser.fullName}</p>
       <div className="modal__list">
         <ToDoItem />
       </div>
