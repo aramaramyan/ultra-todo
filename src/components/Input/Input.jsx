@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { v4 } from 'uuid';
-import { string, object } from "prop-types";
+import { string, array } from "prop-types";
 import { addToDoLocal } from "../../store/appSlice";
+import getID from "../../helpers/getID";
 import useFirestore from "../../services/useFirestore";
 import plusIcon from "../../icons/plus.svg";
 import checkIcon from "../../icons/check.svg";
@@ -25,16 +25,15 @@ export default function Input({ userID, allToDoes }) {
 
   function submitToDo() {
     if (state.trim()) {
-      setState("");
-      setPlaceHolder("New to-do description");
       const todo = {
-        id: v4().split("-")[0],
+        id: getID(),
         title: state,
       };
 
-      addToDo(userID, todo, allToDoes).then(() => {
-        dispatch(addToDoLocal(todo));
-      });
+      setState("");
+      setPlaceHolder("New to-do description");
+
+      addToDo(userID, todo, allToDoes).then(() => dispatch(addToDoLocal(todo)));
       handleOpen();
     } else {
       setPlaceHolder("Please fill the input");
@@ -70,5 +69,5 @@ Input.defaultProps = {
 
 Input.propTypes = {
   userID: string,
-  allToDoes: object,
+  allToDoes: array,
 };
