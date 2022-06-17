@@ -1,10 +1,17 @@
-import { func } from "prop-types";
+import { useDispatch } from "react-redux";
+import { handleModal } from "../../store/appSlice";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
 
-export default function Modal({ closeModal }) {
+export default function Modal() {
+  const dispatch = useDispatch();
+
+  function closeModal() {
+    dispatch(handleModal(false));
+  }
+
   return (
     <div className="modal">
       <div className="modal__header">
@@ -26,11 +33,3 @@ export default function Modal({ closeModal }) {
     </div>
   );
 }
-
-Modal.defaultProps = {
-  closeModal: () => {}
-};
-
-Modal.propTypes = {
-  closeModal: func
-};

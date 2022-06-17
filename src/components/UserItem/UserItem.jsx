@@ -1,12 +1,20 @@
-import { string, number, bool, func } from "prop-types";
+import { string, bool } from "prop-types";
+import { useDispatch } from "react-redux";
+import { handleModal } from "../../store/appSlice";
 import "./UserItem.scss";
 
-export default function UserItem({ fullName, isBlue, openModal }) {
+export default function UserItem({ fullName, isBlue }) {
+  const dispatch = useDispatch();
+
+  function handleClick() {
+    dispatch(handleModal(true));
+  }
+
   return (
     <div
       className={isBlue ? "user-item alice-blue" : "user-item"}
-      onClick={openModal}
-      onKeyPress={openModal}
+      onClick={handleClick}
+      onKeyPress={handleClick}
       role="button"
       tabIndex={0}
     >
@@ -19,11 +27,9 @@ export default function UserItem({ fullName, isBlue, openModal }) {
 UserItem.defaultProps = {
   fullName: '',
   isBlue: false,
-  openModal: () => {}
 };
 
 UserItem.propTypes = {
   fullName: string,
   isBlue: bool,
-  openModal: func
 };

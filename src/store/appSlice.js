@@ -10,9 +10,12 @@ const appSlice = createSlice({
   reducers: {
     setUsers(state, action) {
       state.users = action.payload;
+    },
+    handleModal(state, action) {
+      state.isModalOpen = action.payload;
     }
   }
 });
 
-export const { setUsers } = appSlice.actions;
+export const { setUsers, handleModal } = appSlice.actions;
 export default appSlice.reducer;

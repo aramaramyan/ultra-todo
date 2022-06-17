@@ -8,7 +8,7 @@ import "./Board.scss";
 
 export default function Board() {
   const users = useSelector((state) => state.app.users);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isModalOpen = useSelector((state) => state.app.isModalOpen);
   const { getUsers } = useFirestore();
   const dispatch = useDispatch();
 
@@ -26,14 +26,6 @@ export default function Board() {
     });
   }, []);
 
-  function openModal() {
-    setIsModalOpen(true);
-  }
-
-  function closeModal() {
-    setIsModalOpen(false);
-  }
-
   return (
     <div className="board">
       <div className={isModalOpen ? "board__body modal-open" : "board__body"}>
@@ -44,15 +36,16 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {users.map(({ id, fullName }, i) => <UserItem
-            key={id}
-            fullName={fullName}
-            isBlue={i % 2}
-            openModal={() => openModal()}
-          />)}
+          {users.map(({ id, fullName }, i) => (
+            <UserItem
+              key={id}
+              fullName={fullName}
+              isBlue={i % 2 !== 0}
+            />
+          ))}
         </div>
       </div>
-      {isModalOpen && <Modal closeModal={() => closeModal()} />}
+      {isModalOpen && <Modal />}
     </div>
   );
 }
