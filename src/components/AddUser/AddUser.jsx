@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import useFirestore from "../../services/useFirestore";
+import { addUserLocal, handleLoading } from "../../store/appSlice";
+import getID from "../../helpers/getID";
 import checkIcon from "../../icons/check.svg";
 import plusIcon from "../../icons/plus.svg";
 import "./AddUser.scss";
@@ -7,6 +11,8 @@ export default function AddUser() {
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState("");
   const [placeHolder, setPlaceHolder] = useState("Add new user");
+  const { addUser } = useFirestore();
+  const dispatch = useDispatch();
 
   function handleInput(evt) {
     setState(evt.target.value);
@@ -15,6 +21,29 @@ export default function AddUser() {
   function handleOpen() {
     setIsOpen((prev) => !prev);
   }
+
+  function submitUser() {
+    if (state.trim()) {
+      setState("");
+      setPlaceHolder("Add new user");
+      const userID = getID();
+      addUser(userID, state).then(() => {
+        const user = {
+          id: userID,
+          fullName: state,
+          toDoesArr: [],
+          completed: 0
+        };
+
+        dispatch(handleLoading());
+        dispatch(addUserLocal(user));
+      });
+      handleOpen();
+    } else {
+      setPlaceHolder("Please fill the input");
+    }
+  }
+
   return (
     <div className="add-user">
       <div className="add-user__input">
@@ -27,7 +56,7 @@ export default function AddUser() {
             onChange={handleInput}
           />
           {isOpen ? (
-            <div className="input__button add-user__input_button" onClick={handleOpen}>
+            <div className="input__button add-user__input_button" onClick={submitUser}>
               <img src={checkIcon} alt="Check Icon" />
             </div>
           ) : (

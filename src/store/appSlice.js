@@ -52,6 +52,7 @@ export const {
   setUsers,
   handleModal,
   addToDoLocal,
+  addUserLocal,
   handleLoading,
   setCurrentUser,
   removeCurrentUser,
