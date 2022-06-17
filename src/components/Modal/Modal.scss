@@ -40,10 +40,11 @@
     margin-bottom: 40px;
     font-weight: 900;
     color: getColor("azure");
-    overflow: auto;
   }
 
   &__list {
+    @include flexColumn(flex-sart, center);
+    gap: 24px;
     width: 100%;
     height: 100%;
   }

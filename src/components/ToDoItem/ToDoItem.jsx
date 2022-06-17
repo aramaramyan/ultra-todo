@@ -1,21 +1,34 @@
+import { string, bool } from "prop-types";
 import watchIcon from "../../icons/watch.svg";
+import checkIcon from "../../icons/check.svg";
 import "./ToDoItem.scss";
 
-const todoTitle = "Lorem ipsum dolor sit amet, consectetur adipisicing elit.";
-
-  export default function ToDoItem() {
+export default function ToDoItem({ title, isDone }) {
   return (
     <div className="todo">
       <div className="todo__content">
-        <div className="todo__status">
-          <img src={watchIcon} alt="Watch Icon" />
-          <p className="todo__status_title title">Pending</p>
+        <div className={isDone ? "todo__status completed" : "todo__status"}>
+          {isDone ?
+            <img src={checkIcon} alt="Check Icon" />
+            : <img src={watchIcon} alt="Watch Icon" />
+          }
+          <p className="todo__status_title">{isDone ? "Completed" : "Pending"}</p>
         </div>
-        <p className="title">{todoTitle}</p>
+        <p className="title">{title}</p>
       </div>
       <div className="todo__button">
-        <p className="todo__button_title title">Mark as done</p>
+        <p className="todo__button_title">Mark as done</p>
       </div>
     </div>
   );
 }
+
+ToDoItem.defaultProps = {
+  title: "",
+  isDone: false,
+};
+
+ToDoItem.propTypes = {
+  title: string,
+  isDone: bool,
+};

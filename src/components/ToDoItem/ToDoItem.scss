@@ -19,17 +19,26 @@
   &__status {
     @include flexRow(flex-start, center);
     gap: 6px;
-    width: 98px;
     height: 24px;
-    padding-left: 10px;
+    padding: 4px 16px 4px 10px;
     border-radius: 8px;
     background: getColor("orange");
-    cursor: pointer;
+    cursor: default;
 
     &_title {
       font-size: 14px;
+      font-weight: 300;
       color: getColor("white");
     }
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  .completed {
+    background: getColor("green");
   }
 
   &__button {

@@ -16,10 +16,10 @@ export default function Board() {
     getUsers().then((res) => {
       const localUsers = res.map((item) => {
         const { toDoes, ...user } = item;
-        const todos = Object.keys(toDoes).map((key) => {
+        const toDoesArr = Object.keys(toDoes).map((key) => {
           return ({ ...toDoes[key], id: key });
         });
-        return ({ ...user, todos });
+        return ({ ...user, toDoesArr });
       });
 
       dispatch(setUsers(localUsers));

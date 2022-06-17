@@ -36,9 +36,13 @@
   margin-bottom: 40px;
   font-weight: 900;
   color: #0085FF;
-  overflow: auto;
 }
 .modal__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-sart;
+  align-items: center;
+  gap: 24px;
   width: 100%;
   height: 100%;
 }

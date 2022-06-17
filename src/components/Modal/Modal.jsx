@@ -6,7 +6,7 @@ import closeIcon from "../../icons/close.svg";
 import "./Modal.scss";
 
 export default function Modal() {
-  const [currentUser] = useSelector((state) => state.app.currentUser);
+  const [currentUser] = useSelector((state) => state.app.currentUser) ?? [];
   const dispatch = useDispatch();
 
   function closeModal() {
@@ -30,7 +30,15 @@ export default function Modal() {
       </div>
       <p className="modal__title title">To-do list for {currentUser.fullName}</p>
       <div className="modal__list">
-        <ToDoItem />
+        {currentUser.toDoesArr.map((todo) => {
+          return (
+            <ToDoItem
+              key={todo.key}
+              title={todo.title}
+              isDone={todo.isDone}
+            />
+          );
+        })}
       </div>
     </div>
   );

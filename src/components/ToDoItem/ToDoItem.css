@@ -24,16 +24,23 @@
   justify-content: flex-start;
   align-items: center;
   gap: 6px;
-  width: 98px;
   height: 24px;
-  padding-left: 10px;
+  padding: 4px 16px 4px 10px;
   border-radius: 8px;
   background: #FC9700;
-  cursor: pointer;
+  cursor: default;
 }
 .todo__status_title {
   font-size: 14px;
+  font-weight: 300;
   color: #FFFFFF;
+}
+.todo__status img {
+  width: 10px;
+  height: 10px;
+}
+.todo .completed {
+  background: #03BC90;
 }
 .todo__button {
   min-width: 155px;
