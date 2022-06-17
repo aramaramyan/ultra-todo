@@ -21,6 +21,9 @@ const appSlice = createSlice({
     removeCurrentUser(state) {
       state.currentUser = [];
     },
+    deleteUserLocal(state, action) {
+      state.users = state.users.filter((user) => user.id !== action.payload);
+    },
     addToDoLocal(state, action) {
       state.currentUser[0].toDoesArr = [...state.currentUser[0].toDoesArr, action.payload];
     },
@@ -55,6 +58,7 @@ export const {
   addUserLocal,
   handleLoading,
   setCurrentUser,
+  deleteUserLocal,
   removeCurrentUser,
   handleStatusLocal
 } = appSlice.actions;

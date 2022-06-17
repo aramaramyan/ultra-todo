@@ -4,6 +4,7 @@ import {
   getDocs,
   updateDoc,
   increment,
+  deleteDoc,
   collection,
   getFirestore
 } from "firebase/firestore";
@@ -34,6 +35,10 @@ export default function useFirestore() {
     return result;
   };
 
+  const deleteUser = async (userID) => {
+    await deleteDoc(doc(db, "users", userID));
+  };
+
   const addToDo = async (userID, todo, allToDoes) => {
     const userRef = doc(db, "users", userID);
     await updateDoc(userRef, {
@@ -59,6 +64,7 @@ export default function useFirestore() {
     addToDo,
     addUser,
     getUsers,
+    deleteUser,
     handleStatus
   };
 }
