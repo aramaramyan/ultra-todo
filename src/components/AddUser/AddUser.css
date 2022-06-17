@@ -1,0 +1,17 @@
+.add-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 14px;
+  background: #0085FF;
+}
+.add-user__input {
+  width: 500px;
+}
+.add-user__input_button {
+  background: #03BC90;
+}
+
+/*# sourceMappingURL=AddUser.css.map */

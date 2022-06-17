@@ -6,6 +6,7 @@ import useFirestore from "../../services/useFirestore";
 import { setUsers } from "../../store/appSlice";
 import "./Board.scss";
 import Loader from "../Loader/Loader";
+import AddUser from "../AddUser/AddUser";
 
 export default function Board() {
   const users = useSelector((state) => state.app.users);
@@ -47,6 +48,7 @@ export default function Board() {
             />
           )) : <Loader />}
         </div>
+        <AddUser />
       </div>
       {isModalOpen && <Modal />}
     </div>

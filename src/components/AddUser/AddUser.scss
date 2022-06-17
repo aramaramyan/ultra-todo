@@ -1,0 +1,17 @@
+@import "./../../styles/colors";
+@import "./../../styles/mixins";
+
+.add-user {
+  @include flexRow(flex-start, center);
+  width: 100%;
+  padding: 14px;
+  background: getColor("azure");
+
+  &__input {
+    width: 500px;
+
+    &_button {
+      background: getColor("green");
+    }
+  }
+}
