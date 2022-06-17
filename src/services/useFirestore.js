@@ -2,12 +2,12 @@ import { getFirestore, setDoc, getDocs, collection, doc } from "firebase/firesto
 import firebaseApp from "./firebase";
 
 const db = getFirestore(firebaseApp);
-const docRef = doc(db, "users");
+const collectionRef = collection(db, "users");
 
 export default function useFirestore() {
   const addUser = async (fullName) => {
     try {
-      return await setDoc(docRef, {
+      return await setDoc(collectionRef, {
         fullName,
         toDoes: {}
       });
