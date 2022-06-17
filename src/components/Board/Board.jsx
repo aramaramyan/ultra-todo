@@ -5,6 +5,7 @@ import UserItem from "../UserItem/UserItem";
 import useFirestore from "../../services/useFirestore";
 import { setUsers } from "../../store/appSlice";
 import "./Board.scss";
+import Loader from "../Loader/Loader";
 
 export default function Board() {
   const users = useSelector((state) => state.app.users);
@@ -36,13 +37,13 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {users.map(({ id, fullName }, i) => (
+          {users.length ? users.map(({ id, fullName }, i) => (
             <UserItem
               key={id}
               id={id}
               fullName={fullName}
             />
-          ))}
+          )) : <Loader />}
         </div>
       </div>
       {isModalOpen && <Modal />}
