@@ -48,10 +48,16 @@
   padding: 8px 24px;
   border-radius: 8px;
   background: #0085FF;
+  border: none;
   cursor: pointer;
 }
 .todo__button_title {
   color: #FFFFFF;
+}
+
+.disabled {
+  background: #C7C7C7;
+  cursor: not-allowed;
 }
 
 /*# sourceMappingURL=ToDoItem.css.map */

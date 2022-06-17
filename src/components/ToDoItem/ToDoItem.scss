@@ -47,10 +47,16 @@
     padding: 8px 24px;
     border-radius: 8px;
     background: getColor("azure");
+    border: none;
     cursor: pointer;
 
     &_title {
       color: getColor("white");
     }
   }
+}
+
+.disabled {
+  background: getColor("silver");
+  cursor: not-allowed;
 }

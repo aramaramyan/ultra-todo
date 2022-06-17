@@ -52,9 +52,13 @@ export default function ToDoItem({ userID, todo }) {
         </div>
         <p className="title">{title}</p>
       </div>
-      <div className="todo__button" onClick={changeStatus}>
+      <button
+        className={`todo__button title ${isDone ? "disabled" : ""}`}
+        onClick={changeStatus}
+        disabled={!!isDone}
+      >
         <p className="todo__button_title">Mark as done</p>
-      </div>
+      </button>
     </div>
   );
 }
