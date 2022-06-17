@@ -1,9 +1,9 @@
-import { string, bool } from "prop-types";
+import { string } from "prop-types";
 import { useDispatch } from "react-redux";
 import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
-export default function UserItem({ id, fullName, isBlue }) {
+export default function UserItem({ id, fullName }) {
   const dispatch = useDispatch();
 
   function handleClick() {
@@ -13,7 +13,7 @@ export default function UserItem({ id, fullName, isBlue }) {
 
   return (
     <div
-      className={isBlue ? "user-item alice-blue" : "user-item"}
+      className="user-item"
       onClick={handleClick}
       onKeyPress={handleClick}
       role="button"
@@ -28,11 +28,9 @@ export default function UserItem({ id, fullName, isBlue }) {
 UserItem.defaultProps = {
   id: "",
   fullName: "",
-  isBlue: false,
 };
 
 UserItem.propTypes = {
   id: string,
   fullName: string,
-  isBlue: bool,
 };

@@ -41,7 +41,6 @@ export default function Board() {
               key={id}
               id={id}
               fullName={fullName}
-              isBlue={i % 2 !== 0}
             />
           ))}
         </div>

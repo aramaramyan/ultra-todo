@@ -19,8 +19,8 @@
   &__rate {
     width: 40%;
   }
-}
 
-.alice-blue {
-  background: getColor("alice-blue");
+  &:nth-child(even) {
+    background: getColor("alice-blue");
+  }
 }

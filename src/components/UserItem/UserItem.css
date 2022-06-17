@@ -17,8 +17,7 @@
 .user-item__rate {
   width: 40%;
 }
-
-.alice-blue {
+.user-item:nth-child(even) {
   background: #F3FBFF;
 }
 
