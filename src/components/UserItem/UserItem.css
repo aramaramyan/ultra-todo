@@ -21,4 +21,9 @@
   background: #F3FBFF;
 }
 
+.current-user p {
+  color: #0085FF;
+  font-weight: 700;
+}
+
 /*# sourceMappingURL=UserItem.css.map */

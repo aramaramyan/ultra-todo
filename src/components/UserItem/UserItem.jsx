@@ -1,9 +1,10 @@
 import { string } from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
 export default function UserItem({ id, fullName }) {
+  const [currentUser] = useSelector((state) => state.app.currentUser) ?? [];
   const dispatch = useDispatch();
 
   function handleClick() {
@@ -13,7 +14,7 @@ export default function UserItem({ id, fullName }) {
 
   return (
     <div
-      className="user-item"
+      className={`user-item ${currentUser?.id === id ? 'current-user' : ''}`}
       onClick={handleClick}
       onKeyPress={handleClick}
       role="button"

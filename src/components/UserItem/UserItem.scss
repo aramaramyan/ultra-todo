@@ -24,3 +24,8 @@
     background: getColor("alice-blue");
   }
 }
+
+.current-user p{
+  color: getColor("azure");
+  font-weight: 700;
+}
