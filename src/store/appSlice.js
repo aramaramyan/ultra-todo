@@ -16,7 +16,7 @@ const appSlice = createSlice({
       state.currentUser = state.users.filter((user) => user.id === action.payload);
     },
     removeCurrentUser(state) {
-      state.currentUser = null;
+      state.currentUser = [];
     },
     addToDoLocal(state, action) {
       state.currentUser[0].toDoesArr = [...state.currentUser[0].toDoesArr, action.payload];
