@@ -34,7 +34,7 @@
 }
 .modal__title {
   margin-bottom: 40px;
-  font-weight: 900;
+  font-weight: 900 !important;
   color: #0085FF;
 }
 .modal__list {
