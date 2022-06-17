@@ -37,11 +37,13 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {users.length ? users.map(({ id, fullName }, i) => (
+          {users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
             <UserItem
               key={id}
               id={id}
               fullName={fullName}
+              completed={completed}
+              toDoesLength={toDoesArr.length}
             />
           )) : <Loader />}
         </div>

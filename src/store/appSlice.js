@@ -4,7 +4,7 @@ const appSlice = createSlice({
   name: "app",
   initialState: {
     users: [],
-    currentUser: null,
+    currentUser: [],
     isModalOpen: false,
     isLoading: false
   },
@@ -19,7 +19,7 @@ const appSlice = createSlice({
       state.currentUser = null;
     },
     addToDoLocal(state, action) {
-      state.currentUser[0].toDoesArr.push(action.payload);
+      state.currentUser[0].toDoesArr = [...state.currentUser[0].toDoesArr, action.payload];
     },
     handleStatusLocal(state, action) {
       state.currentUser[0] = {
