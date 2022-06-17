@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { string, array } from "prop-types";
-import { addToDoLocal } from "../../store/appSlice";
+import { addToDoLocal, handleLoading } from "../../store/appSlice";
 import getID from "../../helpers/getID";
 import useFirestore from "../../services/useFirestore";
 import plusIcon from "../../icons/plus.svg";
@@ -33,7 +33,11 @@ export default function Input({ userID, allToDoes }) {
       setState("");
       setPlaceHolder("New to-do description");
 
-      addToDo(userID, todo, allToDoes).then(() => dispatch(addToDoLocal(todo)));
+      dispatch(handleLoading(true));
+      addToDo(userID, todo, allToDoes).then(() => {
+        dispatch(addToDoLocal(todo));
+        dispatch(handleLoading(false));
+      });
       handleOpen();
     } else {
       setPlaceHolder("Please fill the input");
