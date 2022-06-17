@@ -11,6 +11,9 @@ const appSlice = createSlice({
     setUsers(state, action) {
       state.users = action.payload;
     },
+    setCurrentUser(state, action) {
+      state.currentUser = state.filter((user) => user.id !== action.payload);
+    },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
     }
