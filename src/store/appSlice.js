@@ -9,7 +9,6 @@ const appSlice = createSlice({
   },
   reducers: {
     setUsers(state, action) {
-      console.log(":::action.payload:::", action.payload);
       state.users = action.payload;
     }
   }
