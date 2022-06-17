@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { handleModal } from "../../store/appSlice";
+import { handleModal, removeCurrentUser } from "../../store/appSlice";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import closeIcon from "../../icons/close.svg";
@@ -11,6 +11,7 @@ export default function Modal() {
 
   function closeModal() {
     dispatch(handleModal(false));
+    dispatch(removeCurrentUser());
   }
 
   return (
