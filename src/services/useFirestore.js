@@ -10,12 +10,11 @@ import {
 import firebaseApp from "./firebase";
 
 const db = getFirestore(firebaseApp);
-const collectionRef = collection(db, "users");
 
 export default function useFirestore() {
-  const addUser = async (fullName) => {
+  const addUser = async (userID, fullName) => {
     try {
-      return await setDoc(collectionRef, {
+      return await setDoc(doc(db, "users", userID), {
         fullName,
         toDoes: {},
         completed: 0
