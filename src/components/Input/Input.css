@@ -36,6 +36,15 @@
   width: 24px;
   height: 24px;
 }
+.input form {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 77px;
+  background: transparent;
+}
 .input p {
   display: flex;
   flex-direction: row;
