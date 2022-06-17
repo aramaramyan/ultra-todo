@@ -4,6 +4,7 @@ import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import Loader from "../Loader/Loader";
 import closeIcon from "../../icons/close.svg";
+import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
 
 export default function Modal() {
@@ -33,7 +34,13 @@ export default function Modal() {
           <img src={closeIcon} alt="Close Icon" />
         </div>
       </div>
-      <p className="modal__title title">To-do list for {currentUser.fullName}</p>
+      <div className="modal__current-user">
+        <p className="modal__current-user_title title">To-do list for {currentUser.fullName}</p>
+        <div className="modal__current-user_delete">
+          <p>Delete User</p>
+          <img src={deleteUserIcon} alt="Delete User Icon" />
+        </div>
+      </div>
       <div className="modal__list">
         {isLoading ? <Loader /> : (
           currentUser.toDoesArr.map((todo) => {
