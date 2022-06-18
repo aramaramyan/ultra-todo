@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat";
 
 const firebaseApp = initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -8,5 +9,7 @@ const firebaseApp = initializeApp({
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
+
+firebase.firestore().settings({ experimentalForceLongPolling: true });
 
 export default firebaseApp;
