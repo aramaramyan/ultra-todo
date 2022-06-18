@@ -6,6 +6,7 @@ import {
   increment,
   deleteDoc,
   collection,
+  deleteField,
   getFirestore
 } from "firebase/firestore";
 import firebaseApp from "./firebase";
@@ -49,6 +50,14 @@ export default function useFirestore() {
     });
   };
 
+  const deleteToDo = async (userID, todoID) => {
+    const userRef = doc(db, "users", userID);
+
+    await updateDoc(userRef, {
+      [`toDoes.${todoID}`]: deleteField()
+    });
+  };
+
   const handleStatus = async (userID, todo, status, number) => {
     const userRef = doc(db, "users", userID);
     await updateDoc(userRef, {
@@ -65,6 +74,7 @@ export default function useFirestore() {
     addUser,
     getUsers,
     deleteUser,
+    deleteToDo,
     handleStatus
   };
 }

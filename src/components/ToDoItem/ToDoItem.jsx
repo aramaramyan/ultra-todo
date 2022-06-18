@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
-import { handleModalLoading, handleStatusLocal } from "../../store/appSlice";
+import { handleModalLoading, handleStatusLocal, deleteToDoLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
@@ -9,7 +9,7 @@ import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
   const { title, isDone } = todo;
-  const { handleStatus } = useFirestore();
+  const { handleStatus, deleteToDo } = useFirestore();
   const dispatch = useDispatch();
 
   function changeStatus() {
@@ -40,6 +40,14 @@ export default function ToDoItem({ userID, todo }) {
     }
   }
 
+  function delToDo() {
+    dispatch(handleModalLoading(true));
+    deleteToDo(userID, todo.id).then(() => {
+      dispatch(deleteToDoLocal(todo.id));
+      dispatch(handleModalLoading(false));
+    });
+  }
+
   return (
     <div className="todo">
       <div className="todo__content">
@@ -59,7 +67,7 @@ export default function ToDoItem({ userID, todo }) {
       >
         <p className="todo__button_title">Mark as done</p>
       </button>
-      <div className="todo__delete show-delete">
+      <div className="todo__delete show-delete" onClick={delToDo}>
         <img src={closeIcon} alt="Close Icon" />
       </div>
     </div>
