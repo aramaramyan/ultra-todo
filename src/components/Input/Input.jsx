@@ -33,6 +33,7 @@ export default function Input({ userID, allToDoes }) {
       const todo = {
         id: getID(),
         title: state,
+        isDone: false
       };
 
       setState("");
