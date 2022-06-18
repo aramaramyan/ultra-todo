@@ -1,14 +1,40 @@
-import { func } from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { handleModal, removeCurrentUser, deleteUserLocal, handleModalLoading, handleBoardLoading } from "../../store/appSlice";
+import useFirestore from "../../services/useFirestore";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
+import Loader from "../Loader/Loader";
 import closeIcon from "../../icons/close.svg";
+import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
 
-export default function Modal({ closeModal }) {
+export default function Modal() {
+  const [currentUser] = useSelector((state) => state.app.currentUser);
+  const isModalLoading = useSelector((state) => state.app.isModalLoading);
+  const { deleteUser } = useFirestore();
+  const dispatch = useDispatch();
+
+  function closeModal() {
+    dispatch(handleModal(false));
+    dispatch(removeCurrentUser());
+  }
+
+  function delUser() {
+    dispatch(handleBoardLoading(true));
+    deleteUser(currentUser.id).then(() => {
+      dispatch(deleteUserLocal(currentUser.id));
+      dispatch(handleBoardLoading(false));
+    });
+    closeModal();
+  }
+
   return (
     <div className="modal">
       <div className="modal__header">
-        <Input />
+        <Input
+          userID={currentUser.id}
+          allToDoes={currentUser.toDoesArr}
+        />
         <div
           className="modal__close"
           onClick={closeModal}
@@ -19,18 +45,26 @@ export default function Modal({ closeModal }) {
           <img src={closeIcon} alt="Close Icon" />
         </div>
       </div>
-      <p className="modal__title title">To-do list for name</p>
+      <div className="modal__current-user">
+        <p className="modal__current-user_title title">To-do list for {currentUser.fullName}</p>
+        <div className="modal__current-user_delete" onClick={delUser}>
+          <p>Delete User</p>
+          <img src={deleteUserIcon} alt="Delete User Icon" />
+        </div>
+      </div>
       <div className="modal__list">
-        <ToDoItem />
+        {isModalLoading ? <Loader /> : (
+          currentUser.toDoesArr.map((todo) => {
+            return (
+              <ToDoItem
+                key={todo.id}
+                userID={currentUser.id}
+                todo={todo}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );
 }
-
-Modal.defaultProps = {
-  closeModal: () => {}
-};
-
-Modal.propTypes = {
-  closeModal: func
-};

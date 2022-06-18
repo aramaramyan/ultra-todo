@@ -1,19 +1,34 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUsers } from "../../store/appSlice";
+import useFirestore from "../../services/useFirestore";
 import Modal from "../Modal/Modal";
 import UserItem from "../UserItem/UserItem";
-import users from "../../staticTestData";
+import AddUser from "../AddUser/AddUser";
+import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
+import Loader from "../Loader/Loader";
 
 export default function Board() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const users = useSelector((state) => state.app.users);
+  const isModalOpen = useSelector((state) => state.app.isModalOpen);
+  const isBoardLoading = useSelector((state) => state.app.isBoardLoading);
+  const { getUsers } = useFirestore();
+  const dispatch = useDispatch();
 
-  function openModal() {
-    setIsModalOpen(true);
-  }
+  useEffect(() => {
+    getUsers().then((res) => {
+      const localUsers = res.map((item) => {
+        const { toDoes, ...user } = item;
+        const toDoesArr = Object.keys(toDoes).map((key) => {
+          return ({ ...toDoes[key], id: key });
+        });
+        return ({ ...user, toDoesArr });
+      });
 
-  function closeModal() {
-    setIsModalOpen(false);
-  }
+      dispatch(setUsers(localUsers));
+    });
+  }, []);
 
   return (
     <div className="board">
@@ -25,16 +40,26 @@ export default function Board() {
           </div>
         </div>
         <div className="board__list">
-          {users.map(({ id, fullName, rate }, i) => <UserItem
-            key={id}
-            fullName={fullName}
-            rate={rate}
-            isBlue={i % 2}
-            openModal={() => openModal()}
-          />)}
+          {isBoardLoading ? <Loader /> : (
+            users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
+              <UserItem
+                key={id}
+                id={id}
+                fullName={fullName}
+                completed={completed}
+                toDoesLength={toDoesArr.length}
+              />
+            )) : (
+              <div className="no-users">
+                <img src={banIcon} alt="Ban Icon" />
+                <p className="no-users__title title">There are no users</p>
+              </div>
+            )
+          )}
         </div>
+        <AddUser />
       </div>
-      {isModalOpen && <Modal closeModal={() => closeModal()} />}
+      {isModalOpen && <Modal />}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 @import "./../../styles/mixins";
 
 .todo {
+  position: relative;
   @include flexRow(space-between, center);
   width: 100%;
   min-height: 87px;
@@ -14,22 +15,78 @@
     gap: 10px;
     width: 290px;
     height: 100%;
+
+    textarea {
+      width: 100%;
+      padding-left: 5px;
+      resize: none;
+      outline: 0 none transparent;
+      //border: none;
+    }
+
+    textarea:focus {
+      outline: 0;
+    }
   }
 
   &__status {
     @include flexRow(flex-start, center);
     gap: 6px;
-    width: 98px;
     height: 24px;
-    padding-left: 10px;
+    padding: 4px 16px 4px 10px;
     border-radius: 8px;
     background: getColor("orange");
-    cursor: pointer;
+    cursor: default;
 
     &_title {
       font-size: 14px;
+      font-weight: 300;
       color: getColor("white");
     }
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  &__actions {
+    display: none;
+
+    &_edit,
+    &_save {
+      @include flexRow(center, center);
+      min-width: 30px;
+      height: 100%;
+      background: getColor("white");
+      border-radius: 50%;
+      border: 3px solid getColor("bubbles");
+      cursor: pointer;
+
+      img {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    &_delete {
+      @include flexRow(center, center);
+      min-width: 30px;
+      height: 100%;
+      border-radius: 50%;
+      background: getColor("bubbles");
+      border: 3px solid getColor("bubbles");
+      cursor: pointer;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .completed {
+    background: getColor("green");
   }
 
   &__button {
@@ -38,10 +95,31 @@
     padding: 8px 24px;
     border-radius: 8px;
     background: getColor("azure");
+    border: none;
     cursor: pointer;
 
     &_title {
       color: getColor("white");
     }
   }
+
+  &:hover .show-actions {
+    position: absolute;
+    top: -15px;
+    right: 0;
+    @include flexRow(center, center);
+    gap: 5px;
+    width: 70px;
+    height: 30px;
+  }
+
+  &:nth-child(1) {
+    margin-top: 15px;
+  }
+
+}
+
+.disabled {
+  background: getColor("silver");
+  cursor: not-allowed;
 }

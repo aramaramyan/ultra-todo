@@ -4,7 +4,7 @@
 .user-item {
   @include flexRow(flex-start, center);
   width: 100%;
-  height: 58px;
+  min-height: 58px;
 
   &:hover {
     cursor: pointer;
@@ -19,8 +19,13 @@
   &__rate {
     width: 40%;
   }
+
+  &:nth-child(even) {
+    background: getColor("alice-blue");
+  }
 }
 
-.alice-blue {
-  background: getColor("alice-blue");
+.current-user p{
+  color: getColor("azure");
+  font-weight: 700;
 }

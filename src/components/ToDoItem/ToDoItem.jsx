@@ -1,21 +1,147 @@
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { object, string } from "prop-types";
+import useFirestore from "../../services/useFirestore";
+import { handleModalLoading, handleStatusLocal, deleteToDoLocal, updateToDoLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
+import checkIcon from "../../icons/check.svg";
+import closeIcon from "../../icons/close.svg";
+import editIcon from "../../icons/pencil.svg";
+import saveIcon from "../../icons/save.svg";
 import "./ToDoItem.scss";
 
-const todoTitle = "Lorem ipsum dolor sit amet, consectetur adipisicing elit.";
+export default function ToDoItem({ userID, todo }) {
+  const { title, isDone } = todo;
+  const [textareaState, setTextareaState] = useState(title);
+  const [isReadonly, setIsReadonly] = useState(true);
+  const textAreaRef = useRef(null);
+  const { handleStatus, deleteToDo, updateToDo } = useFirestore();
+  const dispatch = useDispatch();
 
-  export default function ToDoItem() {
+  function handleReadonly() {
+    setIsReadonly((prev) => !prev);
+  }
+
+  function editTodo() {
+    if (!todo.isDone) {
+      handleReadonly();
+      textAreaRef.current.focus();
+    }
+  }
+
+  function saveTodo() {
+    handleReadonly();
+    dispatch(handleModalLoading(true));
+
+    updateToDo(userID, todo, textareaState).then(() => {
+      const payload = {
+        id: todo.id,
+        title: textareaState
+      };
+
+      dispatch(updateToDoLocal(payload));
+      dispatch(handleModalLoading(false));
+    });
+  }
+
+  function handleTextarea(evt) {
+    setTextareaState(evt.target.value);
+  }
+
+  function changeStatus() {
+    if (isDone) {
+      dispatch(handleModalLoading(true));
+      handleStatus(userID, todo, false, -1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: false,
+          number: -1
+        };
+
+        dispatch(handleModalLoading(false));
+        dispatch(handleStatusLocal(payload));
+      });
+    } else {
+      dispatch(handleModalLoading(true));
+      handleStatus(userID, todo, true, 1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: true,
+          number: 1
+        };
+
+        dispatch(handleModalLoading(false));
+        dispatch(handleStatusLocal(payload));
+      });
+    }
+  }
+
+  function delToDo() {
+    dispatch(handleModalLoading(true));
+    deleteToDo(userID, todo.id).then(() => {
+      handleStatus(userID, todo, isDone, -1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: isDone,
+          number: -1
+        };
+
+        dispatch(handleStatusLocal(payload));
+      });
+      dispatch(handleModalLoading(false));
+    });
+  }
+
   return (
     <div className="todo">
       <div className="todo__content">
-        <div className="todo__status">
-          <img src={watchIcon} alt="Watch Icon" />
-          <p className="todo__status_title title">Pending</p>
+        <div className={isDone ? "todo__status completed" : "todo__status"}>
+          {isDone ?
+            <img src={checkIcon} alt="Check Icon" />
+            : <img src={watchIcon} alt="Watch Icon" />
+          }
+          <p className="todo__status_title">{isDone ? "Completed" : "Pending"}</p>
         </div>
-        <p className="title">{todoTitle}</p>
+        <textarea
+          ref={textAreaRef}
+          className="title"
+          value={textareaState}
+          rows={1}
+          readOnly={isReadonly}
+          onChange={handleTextarea}
+        />
       </div>
-      <div className="todo__button">
-        <p className="todo__button_title title">Mark as done</p>
+      <button
+        className={`todo__button title ${isDone ? "disabled" : ""}`}
+        onClick={changeStatus}
+        disabled={!!isDone}
+      >
+        <p className="todo__button_title">Mark as done</p>
+      </button>
+      <div className="todo__actions show-actions">
+        {isReadonly ? (
+          <div className={`todo__actions_edit ${isDone ? "disabled" : ""}`} onClick={editTodo}>
+            <img src={editIcon} alt="Edit Icon" />
+          </div>
+        ) : (
+          <div className="todo__actions_save" onClick={saveTodo} onSubmit={saveTodo}>
+            <img src={saveIcon} alt="Save Icon" />
+          </div>
+        )}
+        <div className="todo__actions_delete" onClick={delToDo}>
+          <img src={closeIcon} alt="Close Icon" />
+        </div>
       </div>
     </div>
   );
 }
+
+ToDoItem.defaultProps = {
+  userID: "",
+  todo: {}
+};
+
+ToDoItem.propTypes = {
+  userID: string,
+  todo: object
+};

@@ -1,31 +1,47 @@
-import { string, number, bool, func } from "prop-types";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { number, string } from "prop-types";
+import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
-export default function UserItem({ fullName, rate, isBlue, openModal }) {
+export default function UserItem({ id, fullName, completed, toDoesLength }) {
+  const [currentUser] = useSelector((state) => state.app.currentUser);
+  const [completionRate, setCompletionRate] = useState(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCompletionRate(Math.floor((completed / toDoesLength) * 100));
+  }, [toDoesLength]);
+
+  function handleClick() {
+    dispatch(handleModal(true));
+    dispatch(setCurrentUser(id));
+  }
+
   return (
     <div
-      className={isBlue ? "user-item alice-blue" : "user-item"}
-      onClick={openModal}
-      onKeyPress={openModal}
+      className={`user-item ${currentUser?.id === id ? 'current-user' : ''}`}
+      onClick={handleClick}
+      onKeyPress={handleClick}
       role="button"
       tabIndex={0}
     >
-      <p className="user-item__title title">{ fullName}</p>
-      <p className="user-item__rate title">{rate}</p>
+      <p className="user-item__title title">{fullName}</p>
+      <p className="user-item__rate title">{completionRate || 0}</p>
     </div>
   );
 }
 
 UserItem.defaultProps = {
-  fullName: '',
-  rate: 0,
-  isBlue: false,
-  openModal: () => {}
+  id: "",
+  fullName: "",
+  completed: 0,
+  toDoesLength: 0
 };
 
 UserItem.propTypes = {
+  id: string,
   fullName: string,
-  rate: number,
-  isBlue: bool,
-  openModal: func
+  completed: number,
+  toDoesLength: number
 };
