@@ -2,6 +2,7 @@
 @import "./../../styles/mixins";
 
 .todo {
+  position: relative;
   @include flexRow(space-between, center);
   width: 100%;
   min-height: 87px;
@@ -54,6 +55,32 @@
       color: getColor("white");
     }
   }
+
+  &__delete {
+    position: absolute;
+    display: none;
+    top: -15px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: getColor("bubbles");
+    cursor: pointer;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &:hover .show-delete {
+    @include flexRow(center, center);
+  }
+
+  &:nth-child(1) {
+    margin-top: 15px;
+  }
+
 }
 
 .disabled {

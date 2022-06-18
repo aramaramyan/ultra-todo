@@ -4,11 +4,11 @@ import useFirestore from "../../services/useFirestore";
 import { handleModalLoading, handleStatusLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
+import closeIcon from "../../icons/close.svg";
 import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
   const { title, isDone } = todo;
-  const isModalLoading = useSelector((state) => state.app.isModalLoading);
   const { handleStatus } = useFirestore();
   const dispatch = useDispatch();
 
@@ -59,6 +59,9 @@ export default function ToDoItem({ userID, todo }) {
       >
         <p className="todo__button_title">Mark as done</p>
       </button>
+      <div className="todo__delete show-delete">
+        <img src={closeIcon} alt="Close Icon" />
+      </div>
     </div>
   );
 }
