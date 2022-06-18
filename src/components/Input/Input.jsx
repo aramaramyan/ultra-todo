@@ -17,7 +17,9 @@ export default function Input({ userID, allToDoes }) {
   const { addToDo } = useFirestore();
 
   function handleInput(evt) {
-    setState(evt.target.value);
+    if (isOpen) {
+      setState(evt.target.value);
+    }
   }
 
   function handleOpen() {

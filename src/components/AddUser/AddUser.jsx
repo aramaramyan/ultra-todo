@@ -16,7 +16,9 @@ export default function AddUser() {
   const dispatch = useDispatch();
 
   function handleInput(evt) {
-    setState(evt.target.value);
+    if (isOpen) {
+      setState(evt.target.value);
+    }
   }
 
   function handleOpen() {
