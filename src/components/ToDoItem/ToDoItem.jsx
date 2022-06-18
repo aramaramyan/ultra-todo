@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
@@ -5,12 +6,25 @@ import { handleModalLoading, handleStatusLocal, deleteToDoLocal } from "../../st
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
+import editIcon from "../../icons/pencil.svg";
+import saveIcon from "../../icons/save.svg";
 import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
   const { title, isDone } = todo;
+  const [textAreaState, setTextAreaState] = useState(title);
+  const [isReadonly, setIsReadonly] = useState(true);
+  const textAreaRef = useRef(null);
   const { handleStatus, deleteToDo } = useFirestore();
   const dispatch = useDispatch();
+
+  function handleReadonly() {
+    setIsReadonly((prev) => !prev);
+  }
+
+  function handleTextArea(evt) {
+    setTextAreaState(evt.target.value);
+  }
 
   function changeStatus() {
     if (isDone) {
@@ -58,7 +72,14 @@ export default function ToDoItem({ userID, todo }) {
           }
           <p className="todo__status_title">{isDone ? "Completed" : "Pending"}</p>
         </div>
-        <p className="title">{title}</p>
+        <textarea
+          ref={textAreaRef}
+          className="title"
+          value={textAreaState}
+          rows={1}
+          readOnly={isReadonly}
+          onChange={handleTextArea}
+        />
       </div>
       <button
         className={`todo__button title ${isDone ? "disabled" : ""}`}
@@ -67,8 +88,19 @@ export default function ToDoItem({ userID, todo }) {
       >
         <p className="todo__button_title">Mark as done</p>
       </button>
-      <div className="todo__delete show-delete" onClick={delToDo}>
-        <img src={closeIcon} alt="Close Icon" />
+      <div className="todo__actions show-actions">
+        {isReadonly ? (
+          <div className="todo__actions_edit">
+            <img src={editIcon} alt="Edit Icon" />
+          </div>
+        ) : (
+          <div className="todo__actions_save">
+            <img src={saveIcon} alt="Save Icon" />
+          </div>
+        )}
+        <div className="todo__actions_delete" onClick={delToDo}>
+          <img src={closeIcon} alt="Close Icon" />
+        </div>
       </div>
     </div>
   );

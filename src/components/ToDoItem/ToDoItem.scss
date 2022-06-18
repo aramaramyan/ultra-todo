@@ -15,6 +15,18 @@
     gap: 10px;
     width: 290px;
     height: 100%;
+
+    textarea {
+      width: 100%;
+      padding-left: 5px;
+      resize: none;
+      outline: 0 none transparent;
+      //border: none;
+    }
+
+    textarea:focus {
+      outline: 0;
+    }
   }
 
   &__status {
@@ -38,6 +50,41 @@
     }
   }
 
+  &__actions {
+    display: none;
+
+    &_edit,
+    &_save {
+      @include flexRow(center, center);
+      min-width: 30px;
+      height: 100%;
+      background: getColor("white");
+      border-radius: 50%;
+      border: 3px solid getColor("bubbles");
+      cursor: pointer;
+
+      img {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    &_delete {
+      @include flexRow(center, center);
+      min-width: 30px;
+      height: 100%;
+      border-radius: 50%;
+      background: getColor("bubbles");
+      border: 3px solid getColor("bubbles");
+      cursor: pointer;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
   .completed {
     background: getColor("green");
   }
@@ -56,25 +103,14 @@
     }
   }
 
-  &__delete {
+  &:hover .show-actions {
     position: absolute;
-    display: none;
     top: -15px;
     right: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: getColor("bubbles");
-    cursor: pointer;
-
-    img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  &:hover .show-delete {
     @include flexRow(center, center);
+    gap: 5px;
+    width: 70px;
+    height: 30px;
   }
 
   &:nth-child(1) {
