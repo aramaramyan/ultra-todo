@@ -79,7 +79,15 @@ export default function ToDoItem({ userID, todo }) {
   function delToDo() {
     dispatch(handleModalLoading(true));
     deleteToDo(userID, todo.id).then(() => {
-      dispatch(deleteToDoLocal(todo.id));
+      handleStatus(userID, todo, isDone, -1).then(() => {
+        const payload = {
+          id: todo.id,
+          status: isDone,
+          number: -1
+        };
+
+        dispatch(handleStatusLocal(payload));
+      });
       dispatch(handleModalLoading(false));
     });
   }
