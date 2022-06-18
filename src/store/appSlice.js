@@ -28,6 +28,17 @@ const appSlice = createSlice({
     addToDoLocal(state, action) {
       state.currentUser[0].toDoesArr = [...state.currentUser[0].toDoesArr, action.payload];
     },
+    updateToDoLocal(state, action) {
+      state.currentUser[0].toDoesArr = state.currentUser[0].toDoesArr.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            title: action.payload.title
+          };
+        }
+        return todo;
+      });
+    },
     deleteToDoLocal(state, action) {
       state.currentUser[0].toDoesArr = state.currentUser[0].toDoesArr
         .filter((todo) => todo.id !== action.payload);
@@ -67,6 +78,7 @@ export const {
   setCurrentUser,
   deleteToDoLocal,
   deleteUserLocal,
+  updateToDoLocal,
   removeCurrentUser,
   handleStatusLocal,
   handleBoardLoading,

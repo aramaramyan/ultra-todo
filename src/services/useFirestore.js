@@ -58,6 +58,16 @@ export default function useFirestore() {
     });
   };
 
+  const updateToDo = async (userID, todo, text) => {
+    const userRef = doc(db, "users", userID);
+    await updateDoc(userRef, {
+      [`toDoes.${todo.id}`]: {
+        ...todo,
+        title: text
+      }
+    });
+  };
+
   const handleStatus = async (userID, todo, status, number) => {
     const userRef = doc(db, "users", userID);
     await updateDoc(userRef, {
@@ -74,6 +84,7 @@ export default function useFirestore() {
     addUser,
     getUsers,
     deleteUser,
+    updateToDo,
     deleteToDo,
     handleStatus
   };

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
-import { handleModalLoading, handleStatusLocal, deleteToDoLocal } from "../../store/appSlice";
+import { handleModalLoading, handleStatusLocal, deleteToDoLocal, updateToDoLocal } from "../../store/appSlice";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
@@ -12,18 +12,40 @@ import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
   const { title, isDone } = todo;
-  const [textAreaState, setTextAreaState] = useState(title);
+  const [textareaState, setTextareaState] = useState(title);
   const [isReadonly, setIsReadonly] = useState(true);
   const textAreaRef = useRef(null);
-  const { handleStatus, deleteToDo } = useFirestore();
+  const { handleStatus, deleteToDo, updateToDo } = useFirestore();
   const dispatch = useDispatch();
 
   function handleReadonly() {
     setIsReadonly((prev) => !prev);
   }
 
-  function handleTextArea(evt) {
-    setTextAreaState(evt.target.value);
+  function editTodo() {
+    if (!todo.isDone) {
+      handleReadonly();
+      textAreaRef.current.focus();
+    }
+  }
+
+  function saveTodo() {
+    handleReadonly();
+    dispatch(handleModalLoading(true));
+
+    updateToDo(userID, todo, textareaState).then(() => {
+      const payload = {
+        id: todo.id,
+        title: textareaState
+      };
+
+      dispatch(updateToDoLocal(payload));
+      dispatch(handleModalLoading(false));
+    });
+  }
+
+  function handleTextarea(evt) {
+    setTextareaState(evt.target.value);
   }
 
   function changeStatus() {
@@ -75,10 +97,10 @@ export default function ToDoItem({ userID, todo }) {
         <textarea
           ref={textAreaRef}
           className="title"
-          value={textAreaState}
+          value={textareaState}
           rows={1}
           readOnly={isReadonly}
-          onChange={handleTextArea}
+          onChange={handleTextarea}
         />
       </div>
       <button
@@ -90,11 +112,11 @@ export default function ToDoItem({ userID, todo }) {
       </button>
       <div className="todo__actions show-actions">
         {isReadonly ? (
-          <div className="todo__actions_edit">
+          <div className={`todo__actions_edit ${isDone ? "disabled" : ""}`} onClick={editTodo}>
             <img src={editIcon} alt="Edit Icon" />
           </div>
         ) : (
-          <div className="todo__actions_save">
+          <div className="todo__actions_save" onClick={saveTodo} onSubmit={saveTodo}>
             <img src={saveIcon} alt="Save Icon" />
           </div>
         )}
