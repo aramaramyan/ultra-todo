@@ -60,6 +60,7 @@
     "consistent-return": "off",
     "no-unused-vars": "off",
     "no-param-reassign": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "no-else-return": "off"
   }
 }
