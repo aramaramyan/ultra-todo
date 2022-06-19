@@ -43,8 +43,11 @@
     margin-bottom: 40px;
 
     &_title {
+      width: 70%;
       font-weight: 900 !important;
       color: getColor("azure");
+      word-wrap: break-word;
+      overflow: hidden;
     }
 
     &_delete {
