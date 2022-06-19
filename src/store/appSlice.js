@@ -105,6 +105,13 @@ const appSlice = createSlice({
                 };
               }
               return todo;
+            }).sort((a, b) => {
+              return a.endDate - b.endDate;
+            }).sort((a, b) => {
+              if (a.endDate === 0 && b.endDate === 0) {
+                return b.startDate - a.startDate;
+              }
+              return 0;
             })
           };
         }
