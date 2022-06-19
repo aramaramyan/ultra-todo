@@ -40,18 +40,28 @@ const appSlice = createSlice({
       });
     },
     deleteToDoLocal(state, action) {
-      state.currentUser[0].toDoesArr = state.currentUser[0].toDoesArr
-        .filter((todo) => todo.id !== action.payload);
+      if (action.payload.status) {
+        state.currentUser[0] = {
+          ...state.currentUser[0],
+          completed: state.currentUser[0].completed - 1,
+          toDoesArr: state.currentUser[0].toDoesArr.filter((todo) => todo.id !== action.payload.id)
+        };
+      } else {
+        state.currentUser[0] = {
+          ...state.currentUser[0],
+          toDoesArr: state.currentUser[0].toDoesArr.filter((todo) => todo.id !== action.payload.id)
+        };
+      }
     },
     handleStatusLocal(state, action) {
       state.currentUser[0] = {
         ...state.currentUser[0],
-        completed: state.currentUser[0].completed + action.payload.number,
+        completed: state.currentUser[0].completed + 1,
         toDoesArr: state.currentUser[0].toDoesArr.map((todo) => {
-          if (todo.id === action.payload.id) {
+          if (todo.id === action.payload) {
             return {
               ...todo,
-              isDone: action.payload.status
+              isDone: true
             };
           }
           return todo;

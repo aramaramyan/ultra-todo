@@ -54,54 +54,25 @@ export default function ToDoItem({ userID, todo }) {
     autoGrow(evt, "30px");
   }
 
-  function changeStatus() {
-    if (isDone) {
-      dispatch(handleModalLoading(true));
-      handleStatus(userID, todo, false, -1).then(() => {
-        const payload = {
-          id: todo.id,
-          status: false,
-          number: -1
-        };
-
-        dispatch(handleModalLoading(false));
-        dispatch(handleStatusLocal(payload));
-      });
-    } else {
-      dispatch(handleModalLoading(true));
-      handleStatus(userID, todo, true, 1).then(() => {
-        const payload = {
-          id: todo.id,
-          status: true,
-          number: 1
-        };
-
-        dispatch(handleModalLoading(false));
-        dispatch(handleStatusLocal(payload));
-      });
-    }
+  function markAsDone() {
+    dispatch(handleModalLoading(true));
+    handleStatus(userID, todo).then(() => {
+      dispatch(handleStatusLocal(todo.id));
+      dispatch(handleModalLoading(false));
+    });
   }
 
   function delToDo() {
     dispatch(handleModalLoading(true));
-    deleteToDo(userID, todo.id).then(() => {
-      dispatch(deleteToDoLocal(todo.id));
-    });
+    deleteToDo(userID, todo.id, isDone).then(() => {
+      const payload = {
+        id: todo.id,
+        status: isDone,
+      };
 
-    if (isDone) {
-      handleStatus(userID, todo, false, -1).then(() => {
-        const payload = {
-          id: todo.id,
-          status: todo.isDone,
-          number: -1
-        };
-
-        dispatch(handleStatusLocal(payload));
-        dispatch(handleModalLoading(true));
-      });
-    } else {
+      dispatch(deleteToDoLocal(payload));
       dispatch(handleModalLoading(false));
-    }
+    });
   }
 
   return (
@@ -125,7 +96,7 @@ export default function ToDoItem({ userID, todo }) {
       </div>
       <button
         className={`todo__button title ${isDone ? "disabled" : ""}`}
-        onClick={changeStatus}
+        onClick={markAsDone}
         disabled={!!isDone}
       >
         <p className="todo__button_title">Mark as done</p>
