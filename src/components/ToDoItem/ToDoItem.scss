@@ -50,11 +50,14 @@
     }
   }
 
-  &__actions {
+  &__header {
     display: none;
 
+    &_date,
     &_edit,
-    &_save {
+    &_save,
+    &_delete,
+    {
       @include flexRow(center, center);
       min-width: 30px;
       height: 100%;
@@ -69,14 +72,19 @@
       }
     }
 
+    &_date {
+      width: 100%;
+      border-radius: 30px;
+      padding: 0 10px;
+
+      p {
+        font-size: 12px;
+      }
+    }
+
     &_delete {
-      @include flexRow(center, center);
-      min-width: 30px;
-      height: 100%;
       border-radius: 50%;
       background: getColor("bubbles");
-      border: 3px solid getColor("bubbles");
-      cursor: pointer;
 
       img {
         width: 24px;
@@ -103,13 +111,13 @@
     }
   }
 
-  &:hover .show-actions {
+  &:hover .show-header {
     position: absolute;
     top: -15px;
     right: 0;
     @include flexRow(center, center);
     gap: 5px;
-    width: 70px;
+    min-width: 200px;
     height: 30px;
   }
 

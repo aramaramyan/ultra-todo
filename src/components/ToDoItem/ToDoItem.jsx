@@ -4,6 +4,7 @@ import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
 import { handleModalLoading, handleStatusLocal, deleteToDoLocal, updateToDoLocal } from "../../store/appSlice";
 import autoGrow from "../../helpers/autoGrow";
+import msToTime from "../../helpers/msToTime";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
@@ -12,7 +13,7 @@ import saveIcon from "../../icons/save.svg";
 import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
-  const { title, endDate } = todo;
+  const { title, startDate, endDate } = todo;
   const [textareaState, setTextareaState] = useState(title);
   const [isReadonly, setIsReadonly] = useState(true);
   const textAreaRef = useRef(null);
@@ -110,17 +111,26 @@ export default function ToDoItem({ userID, todo }) {
       >
         <p className="todo__button_title">Mark as done</p>
       </button>
-      <div className="todo__actions show-actions">
+      <div className="todo__header show-header">
+        <div className="todo__header_date">
+            <p className="title" style={{ color: `${endDate ? "#03BC90" : "#FC9700"}` }}>
+              {endDate ? (
+                `completed ${msToTime(endDate)} ago`
+            ) : (
+              `created ${msToTime(startDate)} ago`
+            )}
+            </p>
+        </div>
         {isReadonly ? (
-          <div className={`todo__actions_edit ${endDate ? "disabled" : ""}`} onClick={editTodo}>
+          <div className={`todo__header_edit ${endDate ? "disabled" : ""}`} onClick={editTodo}>
             <img src={editIcon} alt="Edit Icon" />
           </div>
         ) : (
-          <div className="todo__actions_save" onClick={saveTodo} onSubmit={saveTodo}>
+          <div className="todo__header_save" onClick={saveTodo} onSubmit={saveTodo}>
             <img src={saveIcon} alt="Save Icon" />
           </div>
         )}
-        <div className="todo__actions_delete" onClick={delToDo}>
+        <div className="todo__header_delete" onClick={delToDo}>
           <img src={closeIcon} alt="Close Icon" />
         </div>
       </div>

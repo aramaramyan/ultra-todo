@@ -1,13 +1,17 @@
-export default function dateConverter(milliseconds) {
-  const seconds = Math.floor((milliseconds / 1000) % 60);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+export default function msToTime(ms) {
+  const result = Date.now() - ms;
+  const seconds = Math.round(result / 1000);
+  const minutes = Math.round(result / (1000 * 60));
+  const hours = Math.round(result / (1000 * 60 * 60));
+  const days = Math.round(result / (1000 * 60 * 60 * 24));
 
-  return {
-    seconds,
-    minutes,
-    hours,
-    days
-  };
+  if (seconds < 60) {
+    return `${seconds} sec`;
+  } else if (minutes < 60) {
+    return `${minutes} min`;
+  } else if (hours < 24) {
+    return `${hours} hrs`;
+  } else {
+    return `${days} days`;
+  }
 }
