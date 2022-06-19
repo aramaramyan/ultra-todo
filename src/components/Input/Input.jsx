@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { string, array } from "prop-types";
 import { addToDoLocal, handleModalLoading } from "../../store/appSlice";
 import getID from "../../helpers/getID";
+import getUserObjFromArr from "../../helpers/getUserObjFromArr";
 import useFirestore from "../../services/useFirestore";
 import plusIcon from "../../icons/plus.svg";
 import checkIcon from "../../icons/check.svg";
@@ -15,6 +16,10 @@ export default function Input({ userID, allToDoes }) {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const { addToDo } = useFirestore();
+
+  const toDoesObj = useCallback(() => {
+    return getUserObjFromArr(allToDoes);
+  }, [allToDoes.length]);
 
   function handleInput(evt) {
     if (isOpen) {
@@ -40,7 +45,7 @@ export default function Input({ userID, allToDoes }) {
       setPlaceHolder("New to-do description");
 
       dispatch(handleModalLoading(true));
-      addToDo(userID, todo, allToDoes).then(() => {
+      addToDo(userID, todo, toDoesObj()).then(() => {
         const payload = {
           userID,
           todo
