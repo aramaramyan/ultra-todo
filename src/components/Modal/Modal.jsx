@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { handleModal, removeCurrentUser, deleteUserLocal, handleModalLoading, handleBoardLoading } from "../../store/appSlice";
+import { handleModal, removeCurrentUser, deleteUserLocal, handleBoardLoading } from "../../store/appSlice";
 import useFirestore from "../../services/useFirestore";
 import Input from "../Input/Input";
 import ToDoItem from "../ToDoItem/ToDoItem";
@@ -9,7 +9,7 @@ import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
 
 export default function Modal() {
-  const [currentUser] = useSelector((state) => state.app.currentUser);
+  const currentUser = useSelector((state) => state.app.currentUser);
   const isModalLoading = useSelector((state) => state.app.isModalLoading);
   const { deleteUser } = useFirestore();
   const dispatch = useDispatch();

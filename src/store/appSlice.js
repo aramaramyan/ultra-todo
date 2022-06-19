@@ -17,7 +17,7 @@ const appSlice = createSlice({
       state.users.push(action.payload);
     },
     setCurrentUser(state, action) {
-      state.currentUser = state.users.filter((user) => user.id === action.payload);
+      [state.currentUser] = state.users.filter((user) => user.id === action.payload);
     },
     removeCurrentUser(state) {
       state.currentUser = [];
@@ -26,10 +26,10 @@ const appSlice = createSlice({
       state.users = state.users.filter((user) => user.id !== action.payload);
     },
     addToDoLocal(state, action) {
-      state.currentUser[0].toDoesArr = [...state.currentUser[0].toDoesArr, action.payload];
+      state.currentUser.toDoesArr = [...state.currentUser.toDoesArr, action.payload];
     },
     updateToDoLocal(state, action) {
-      state.currentUser[0].toDoesArr = state.currentUser[0].toDoesArr.map((todo) => {
+      state.currentUser.toDoesArr = state.currentUser.toDoesArr.map((todo) => {
         if (todo.id === action.payload.id) {
           return {
             ...todo,
@@ -41,23 +41,23 @@ const appSlice = createSlice({
     },
     deleteToDoLocal(state, action) {
       if (action.payload.status) {
-        state.currentUser[0] = {
-          ...state.currentUser[0],
-          completed: state.currentUser[0].completed - 1,
-          toDoesArr: state.currentUser[0].toDoesArr.filter((todo) => todo.id !== action.payload.id)
+        state.currentUser = {
+          ...state.currentUser,
+          completed: state.currentUser.completed - 1,
+          toDoesArr: state.currentUser.toDoesArr.filter((todo) => todo.id !== action.payload.id)
         };
       } else {
-        state.currentUser[0] = {
-          ...state.currentUser[0],
-          toDoesArr: state.currentUser[0].toDoesArr.filter((todo) => todo.id !== action.payload.id)
+        state.currentUser = {
+          ...state.currentUser,
+          toDoesArr: state.currentUser.toDoesArr.filter((todo) => todo.id !== action.payload.id)
         };
       }
     },
     handleStatusLocal(state, action) {
-      state.currentUser[0] = {
-        ...state.currentUser[0],
-        completed: state.currentUser[0].completed + 1,
-        toDoesArr: state.currentUser[0].toDoesArr.map((todo) => {
+      state.currentUser = {
+        ...state.currentUser,
+        completed: state.currentUser.completed + 1,
+        toDoesArr: state.currentUser.toDoesArr.map((todo) => {
           if (todo.id === action.payload) {
             return {
               ...todo,

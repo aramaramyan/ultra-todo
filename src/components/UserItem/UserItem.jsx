@@ -5,7 +5,7 @@ import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
 export default function UserItem({ id, fullName, completed, toDoesLength }) {
-  const [currentUser] = useSelector((state) => state.app.currentUser);
+  const currentUser = useSelector((state) => state.app.currentUser);
   const [completionRate, setCompletionRate] = useState(0);
   const dispatch = useDispatch();
 
