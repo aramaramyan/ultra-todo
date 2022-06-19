@@ -34,13 +34,19 @@ export default function ToDoItem({ userID, todo }) {
     }
   }
 
+  function handleTextarea(evt) {
+    setTextareaState(evt.target.value);
+    autoGrow(evt, "30px");
+  }
+
   function saveTodo() {
     handleReadonly();
     dispatch(handleModalLoading(true));
 
     updateToDo(userID, todo, textareaState).then(() => {
       const payload = {
-        id: todo.id,
+        userID,
+        todoID: todo.id,
         title: textareaState
       };
 
@@ -49,15 +55,15 @@ export default function ToDoItem({ userID, todo }) {
     });
   }
 
-  function handleTextarea(evt) {
-    setTextareaState(evt.target.value);
-    autoGrow(evt, "30px");
-  }
-
   function markAsDone() {
     dispatch(handleModalLoading(true));
     handleStatus(userID, todo).then(() => {
-      dispatch(handleStatusLocal(todo.id));
+      const payload = {
+        userID,
+        todoID: todo.id
+      };
+
+      dispatch(handleStatusLocal(payload));
       dispatch(handleModalLoading(false));
     });
   }
@@ -66,7 +72,8 @@ export default function ToDoItem({ userID, todo }) {
     dispatch(handleModalLoading(true));
     deleteToDo(userID, todo.id, isDone).then(() => {
       const payload = {
-        id: todo.id,
+        userID,
+        todoID: todo.id,
         status: isDone,
       };
 

@@ -59,6 +59,7 @@
     "eslint-disable-next-line": "off",
     "consistent-return": "off",
     "no-unused-vars": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-plusplus": "off"
   }
 }

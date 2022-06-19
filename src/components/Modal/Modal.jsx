@@ -9,7 +9,8 @@ import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
 
 export default function Modal() {
-  const currentUser = useSelector((state) => state.app.currentUser);
+  const currentUserIndex = useSelector((state) => state.app.currentUser);
+  const currentUser = useSelector((state) => state.app.users[currentUserIndex]);
   const isModalLoading = useSelector((state) => state.app.isModalLoading);
   const { deleteUser } = useFirestore();
   const dispatch = useDispatch();

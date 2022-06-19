@@ -18,15 +18,7 @@ export default function Board() {
 
   useEffect(() => {
     getUsers().then((res) => {
-      const localUsers = res.map((item) => {
-        const { toDoes, ...user } = item;
-        const toDoesArr = Object.keys(toDoes).map((key) => {
-          return ({ ...toDoes[key], id: key });
-        });
-        return ({ ...user, toDoesArr });
-      });
-
-      dispatch(setUsers(localUsers));
+      dispatch(setUsers(res));
     });
   }, []);
 

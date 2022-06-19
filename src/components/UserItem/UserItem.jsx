@@ -5,13 +5,14 @@ import { handleModal, setCurrentUser } from "../../store/appSlice";
 import "./UserItem.scss";
 
 export default function UserItem({ id, fullName, completed, toDoesLength }) {
-  const currentUser = useSelector((state) => state.app.currentUser);
+  const currentUserIndex = useSelector((state) => state.app.currentUser);
+  const currentUser = useSelector((state) => state.app.users[currentUserIndex]);
   const [completionRate, setCompletionRate] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setCompletionRate(Math.floor((completed / toDoesLength) * 100));
-  }, [toDoesLength]);
+  }, [completed, toDoesLength]);
 
   function handleClick() {
     dispatch(handleModal(true));

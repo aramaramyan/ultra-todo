@@ -4,69 +4,105 @@ const appSlice = createSlice({
   name: "app",
   initialState: {
     users: [],
-    currentUser: [],
+    currentUser: null,
     isModalOpen: false,
     isBoardLoading: false,
     isModalLoading: false
   },
   reducers: {
     setUsers(state, action) {
-      state.users = action.payload;
+      state.users = action.payload.map((item) => {
+        const { toDoes, ...user } = item;
+        const toDoesArr = Object.keys(toDoes).map((key) => {
+          return ({ ...toDoes[key], id: key });
+        });
+        return ({ ...user, toDoesArr });
+      });
     },
     addUserLocal(state, action) {
       state.users.push(action.payload);
     },
     setCurrentUser(state, action) {
-      [state.currentUser] = state.users.filter((user) => user.id === action.payload);
+      for (let i = 0; i < state.users.length; i++) {
+        if (state.users[i].id === action.payload) {
+          state.currentUser = i;
+          break;
+        }
+      }
     },
     removeCurrentUser(state) {
-      state.currentUser = [];
+      state.currentUser = null;
     },
     deleteUserLocal(state, action) {
       state.users = state.users.filter((user) => user.id !== action.payload);
     },
     addToDoLocal(state, action) {
-      state.currentUser.toDoesArr = [...state.currentUser.toDoesArr, action.payload];
-    },
-    updateToDoLocal(state, action) {
-      state.currentUser.toDoesArr = state.currentUser.toDoesArr.map((todo) => {
-        if (todo.id === action.payload.id) {
+      state.users = state.users.map((user) => {
+        if (user.id === action.payload.userID) {
           return {
-            ...todo,
-            title: action.payload.title
+            ...user,
+            toDoesArr: [...user.toDoesArr, action.payload.todo]
           };
         }
-        return todo;
+        return user;
+      });
+    },
+    updateToDoLocal(state, action) {
+      state.users = state.users.map((user) => {
+        if (user.id === action.payload.userID) {
+          return {
+            ...user,
+            toDoesArr: user.toDoesArr.map((todo) => {
+              if (todo.id === action.payload.todoID) {
+                return {
+                  ...todo,
+                  title: action.payload.title
+                };
+              }
+              return todo;
+            })
+          };
+        }
+        return user;
       });
     },
     deleteToDoLocal(state, action) {
-      if (action.payload.status) {
-        state.currentUser = {
-          ...state.currentUser,
-          completed: state.currentUser.completed - 1,
-          toDoesArr: state.currentUser.toDoesArr.filter((todo) => todo.id !== action.payload.id)
-        };
-      } else {
-        state.currentUser = {
-          ...state.currentUser,
-          toDoesArr: state.currentUser.toDoesArr.filter((todo) => todo.id !== action.payload.id)
-        };
-      }
-    },
-    handleStatusLocal(state, action) {
-      state.currentUser = {
-        ...state.currentUser,
-        completed: state.currentUser.completed + 1,
-        toDoesArr: state.currentUser.toDoesArr.map((todo) => {
-          if (todo.id === action.payload) {
+      state.users = state.users.map((user) => {
+        if (user.id === action.payload.userID) {
+          if (action.payload.status) {
             return {
-              ...todo,
-              isDone: true
+              ...user,
+              completed: user.completed - 1,
+              toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
             };
           }
-          return todo;
-        })
-      };
+          return {
+            ...user,
+            toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
+          };
+        }
+        return user;
+      });
+    },
+    handleStatusLocal(state, action) {
+      state.users = state.users.map((user) => {
+        if (user.id === action.payload.userID) {
+          return {
+            ...user,
+            completed: user.completed + 1,
+            toDoesArr: user.toDoesArr.map((todo) => {
+              if (todo.id === action.payload.todoID) {
+                return {
+                  ...todo,
+                  isDone: true
+                };
+              }
+              return todo;
+            })
+          };
+        }
+        return user;
+      });
     },
     handleModal(state, action) {
       state.isModalOpen = action.payload;

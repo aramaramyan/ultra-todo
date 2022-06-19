@@ -41,7 +41,12 @@ export default function Input({ userID, allToDoes }) {
 
       dispatch(handleModalLoading(true));
       addToDo(userID, todo, allToDoes).then(() => {
-        dispatch(addToDoLocal(todo));
+        const payload = {
+          userID,
+          todo
+        };
+
+        dispatch(addToDoLocal(payload));
         dispatch(handleModalLoading(false));
       });
       handleOpen();
