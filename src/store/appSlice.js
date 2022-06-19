@@ -15,6 +15,13 @@ const appSlice = createSlice({
         const { toDoes, ...user } = item;
         const toDoesArr = Object.keys(toDoes).map((key) => {
           return ({ ...toDoes[key], id: key });
+        }).sort((a, b) => {
+            return a.endDate - b.endDate;
+        }).sort((a, b) => {
+          if (a.endDate === 0 && b.endDate === 0) {
+            return b.startDate - a.startDate;
+          }
+          return 0;
         });
         return ({ ...user, toDoesArr });
       });
@@ -41,7 +48,7 @@ const appSlice = createSlice({
         if (user.id === action.payload.userID) {
           return {
             ...user,
-            toDoesArr: [...user.toDoesArr, action.payload.todo]
+            toDoesArr: [action.payload.todo, ...user.toDoesArr]
           };
         }
         return user;
@@ -69,7 +76,7 @@ const appSlice = createSlice({
     deleteToDoLocal(state, action) {
       state.users = state.users.map((user) => {
         if (user.id === action.payload.userID) {
-          if (action.payload.status) {
+          if (action.payload.endDate) {
             return {
               ...user,
               completed: user.completed - 1,
@@ -94,7 +101,7 @@ const appSlice = createSlice({
               if (todo.id === action.payload.todoID) {
                 return {
                   ...todo,
-                  isDone: true
+                  endDate: action.payload.endDate
                 };
               }
               return todo;

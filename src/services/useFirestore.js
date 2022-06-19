@@ -50,10 +50,10 @@ export default function useFirestore() {
     });
   };
 
-  const deleteToDo = async (userID, todoID, status) => {
+  const deleteToDo = async (userID, todoID, endDate) => {
     const userRef = doc(db, "users", userID);
 
-    if (status) {
+    if (endDate) {
       await updateDoc(userRef, {
         completed: increment(-1),
         [`toDoes.${todoID}`]: deleteField()
@@ -75,13 +75,13 @@ export default function useFirestore() {
     });
   };
 
-  const handleStatus = async (userID, todo) => {
+  const handleStatus = async (userID, todo, timeNow) => {
     const userRef = doc(db, "users", userID);
     await updateDoc(userRef, {
       completed: increment(1),
       [`toDoes.${todo.id}`]: {
         ...todo,
-        isDone: true
+        endDate: timeNow
       }
     });
   };

@@ -38,8 +38,8 @@ export default function Input({ userID, allToDoes }) {
       const todo = {
         id: getID(),
         title: state,
-        isDone: false,
-        date: Date.now()
+        startDate: Date.now(),
+        endDate: 0
       };
 
       setState("");

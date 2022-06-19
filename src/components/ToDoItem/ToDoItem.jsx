@@ -12,7 +12,7 @@ import saveIcon from "../../icons/save.svg";
 import "./ToDoItem.scss";
 
 export default function ToDoItem({ userID, todo }) {
-  const { title, isDone } = todo;
+  const { title, endDate } = todo;
   const [textareaState, setTextareaState] = useState(title);
   const [isReadonly, setIsReadonly] = useState(true);
   const textAreaRef = useRef(null);
@@ -28,7 +28,7 @@ export default function ToDoItem({ userID, todo }) {
   }
 
   function editTodo() {
-    if (!todo.isDone) {
+    if (!todo.endDate) {
       handleReadonly();
       textAreaRef.current.focus();
     }
@@ -56,11 +56,13 @@ export default function ToDoItem({ userID, todo }) {
   }
 
   function markAsDone() {
+    const timeNow = Date.now();
     dispatch(handleModalLoading(true));
-    handleStatus(userID, todo).then(() => {
+    handleStatus(userID, todo, timeNow).then(() => {
       const payload = {
         userID,
-        todoID: todo.id
+        todoID: todo.id,
+        endDate: timeNow
       };
 
       dispatch(handleStatusLocal(payload));
@@ -70,11 +72,11 @@ export default function ToDoItem({ userID, todo }) {
 
   function delToDo() {
     dispatch(handleModalLoading(true));
-    deleteToDo(userID, todo.id, isDone).then(() => {
+    deleteToDo(userID, todo.id, endDate).then(() => {
       const payload = {
         userID,
         todoID: todo.id,
-        status: isDone,
+        endDate
       };
 
       dispatch(deleteToDoLocal(payload));
@@ -85,12 +87,12 @@ export default function ToDoItem({ userID, todo }) {
   return (
     <div className="todo">
       <div className="todo__content">
-        <div className={isDone ? "todo__status completed" : "todo__status"}>
-          {isDone ?
+        <div className={endDate ? "todo__status completed" : "todo__status"}>
+          {endDate ?
             <img src={checkIcon} alt="Check Icon" />
             : <img src={watchIcon} alt="Watch Icon" />
           }
-          <p className="todo__status_title">{isDone ? "Completed" : "Pending"}</p>
+          <p className="todo__status_title">{endDate ? "Completed" : "Pending"}</p>
         </div>
         <textarea
           ref={textAreaRef}
@@ -102,15 +104,15 @@ export default function ToDoItem({ userID, todo }) {
         />
       </div>
       <button
-        className={`todo__button title ${isDone ? "disabled" : ""}`}
+        className={`todo__button title ${endDate ? "disabled" : ""}`}
         onClick={markAsDone}
-        disabled={!!isDone}
+        disabled={!!endDate}
       >
         <p className="todo__button_title">Mark as done</p>
       </button>
       <div className="todo__actions show-actions">
         {isReadonly ? (
-          <div className={`todo__actions_edit ${isDone ? "disabled" : ""}`} onClick={editTodo}>
+          <div className={`todo__actions_edit ${endDate ? "disabled" : ""}`} onClick={editTodo}>
             <img src={editIcon} alt="Edit Icon" />
           </div>
         ) : (
