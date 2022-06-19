@@ -5,6 +5,7 @@ import useFirestore from "../../services/useFirestore";
 import { handleModalLoading, handleStatusLocal, deleteToDoLocal, updateToDoLocal } from "../../store/appSlice";
 import autoGrow from "../../helpers/autoGrow";
 import msToTime from "../../helpers/msToTime";
+import getTaskDuration from "../../helpers/getTaskDuration";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
@@ -19,6 +20,7 @@ export default function ToDoItem({ userID, todo }) {
   const textAreaRef = useRef(null);
   const { handleStatus, deleteToDo, updateToDo } = useFirestore();
   const dispatch = useDispatch();
+  const currentDate = Date.now();
 
   useEffect(() => {
     textAreaRef.current.rows = Math.trunc(textAreaRef.current.scrollHeight / 21);
@@ -109,15 +111,17 @@ export default function ToDoItem({ userID, todo }) {
         onClick={markAsDone}
         disabled={!!endDate}
       >
-        <p className="todo__button_title">Mark as done</p>
+        <p className="todo__button_title" style={{ fontSize: `${endDate ? "14px" : "18px"}` }}>
+          {endDate ? `Duration: ${getTaskDuration(startDate, endDate)}` : "Mark as done"}
+        </p>
       </button>
       <div className="todo__header show-header">
         <div className="todo__header_date">
             <p className="title" style={{ color: `${endDate ? "#03BC90" : "#FC9700"}` }}>
               {endDate ? (
-                `completed ${msToTime(endDate)} ago`
+                `completed ${msToTime(currentDate - endDate)} ago`
             ) : (
-              `created ${msToTime(startDate)} ago`
+              `created ${msToTime(currentDate - startDate)} ago`
             )}
             </p>
         </div>

@@ -73,6 +73,7 @@
   width: 100%;
   border-radius: 30px;
   padding: 0 10px;
+  cursor: default;
 }
 .todo__header_date p {
   font-size: 12px;
@@ -118,7 +119,7 @@
 
 .disabled {
   background: #C7C7C7;
-  cursor: not-allowed;
+  cursor: default;
 }
 
 /*# sourceMappingURL=ToDoItem.css.map */

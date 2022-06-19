@@ -76,6 +76,7 @@
       width: 100%;
       border-radius: 30px;
       padding: 0 10px;
+      cursor: default;
 
       p {
         font-size: 12px;
@@ -129,5 +130,5 @@
 
 .disabled {
   background: getColor("silver");
-  cursor: not-allowed;
+  cursor: default;
 }
