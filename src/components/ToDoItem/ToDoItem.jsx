@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { object, string } from "prop-types";
 import useFirestore from "../../services/useFirestore";
 import { handleModalLoading, handleStatusLocal, deleteToDoLocal, updateToDoLocal } from "../../store/appSlice";
+import autoGrow from "../../helpers/autoGrow";
 import watchIcon from "../../icons/watch.svg";
 import checkIcon from "../../icons/check.svg";
 import closeIcon from "../../icons/close.svg";
@@ -17,6 +18,10 @@ export default function ToDoItem({ userID, todo }) {
   const textAreaRef = useRef(null);
   const { handleStatus, deleteToDo, updateToDo } = useFirestore();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    textAreaRef.current.rows = Math.trunc(textAreaRef.current.scrollHeight / 21);
+  }, []);
 
   function handleReadonly() {
     setIsReadonly((prev) => !prev);
@@ -46,6 +51,7 @@ export default function ToDoItem({ userID, todo }) {
 
   function handleTextarea(evt) {
     setTextareaState(evt.target.value);
+    autoGrow(evt, "30px");
   }
 
   function changeStatus() {
@@ -79,17 +85,23 @@ export default function ToDoItem({ userID, todo }) {
   function delToDo() {
     dispatch(handleModalLoading(true));
     deleteToDo(userID, todo.id).then(() => {
-      handleStatus(userID, todo, isDone, -1).then(() => {
+      dispatch(deleteToDoLocal(todo.id));
+    });
+
+    if (isDone) {
+      handleStatus(userID, todo, false, -1).then(() => {
         const payload = {
           id: todo.id,
-          status: isDone,
+          status: todo.isDone,
           number: -1
         };
 
         dispatch(handleStatusLocal(payload));
+        dispatch(handleModalLoading(true));
       });
+    } else {
       dispatch(handleModalLoading(false));
-    });
+    }
   }
 
   return (
@@ -104,9 +116,9 @@ export default function ToDoItem({ userID, todo }) {
         </div>
         <textarea
           ref={textAreaRef}
+          rows={1}
           className="title"
           value={textareaState}
-          rows={1}
           readOnly={isReadonly}
           onChange={handleTextarea}
         />
