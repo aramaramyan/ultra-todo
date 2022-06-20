@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  gap: 20px;
   width: 100%;
   min-height: 58px;
 }
@@ -13,6 +14,7 @@
   width: 60%;
   padding-left: 16px;
   color: #191A1B;
+  overflow: hidden;
 }
 .user-item__rate {
   width: 40%;

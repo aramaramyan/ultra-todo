@@ -42,8 +42,11 @@
   margin-bottom: 40px;
 }
 .modal__current-user_title {
+  width: 70%;
   font-weight: 900 !important;
   color: #0085FF;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 .modal__current-user_delete {
   display: flex;
@@ -67,7 +70,8 @@
   align-items: center;
   gap: 24px;
   width: 100%;
-  height: 100%;
+  height: 500px;
+  padding-bottom: 20px;
   overflow: auto;
 }
 

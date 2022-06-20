@@ -24,6 +24,7 @@
   padding-left: 5px;
   resize: none;
   outline: 0 none transparent;
+  border: none;
 }
 .todo__content textarea:focus {
   outline: 0;
@@ -49,10 +50,10 @@
   width: 10px;
   height: 10px;
 }
-.todo__actions {
+.todo__header {
   display: none;
 }
-.todo__actions_edit, .todo__actions_save {
+.todo__header_date, .todo__header_edit, .todo__header_save, .todo__header_delete {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -64,23 +65,24 @@
   border: 3px solid #E7F6FE;
   cursor: pointer;
 }
-.todo__actions_edit img, .todo__actions_save img {
+.todo__header_date img, .todo__header_edit img, .todo__header_save img, .todo__header_delete img {
   width: 12px;
   height: 12px;
 }
-.todo__actions_delete {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  min-width: 30px;
-  height: 100%;
+.todo__header_date {
+  width: 100%;
+  border-radius: 30px;
+  padding: 0 10px;
+  cursor: default;
+}
+.todo__header_date p {
+  font-size: 12px;
+}
+.todo__header_delete {
   border-radius: 50%;
   background: #E7F6FE;
-  border: 3px solid #E7F6FE;
-  cursor: pointer;
 }
-.todo__actions_delete img {
+.todo__header_delete img {
   width: 24px;
   height: 24px;
 }
@@ -99,7 +101,7 @@
 .todo__button_title {
   color: #FFFFFF;
 }
-.todo:hover .show-actions {
+.todo:hover .show-header {
   position: absolute;
   top: -15px;
   right: 0;
@@ -108,7 +110,7 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 70px;
+  min-width: 200px;
   height: 30px;
 }
 .todo:nth-child(1) {
@@ -117,7 +119,7 @@
 
 .disabled {
   background: #C7C7C7;
-  cursor: not-allowed;
+  cursor: default;
 }
 
 /*# sourceMappingURL=ToDoItem.css.map */

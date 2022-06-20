@@ -50,12 +50,19 @@ export default function useFirestore() {
     });
   };
 
-  const deleteToDo = async (userID, todoID) => {
+  const deleteToDo = async (userID, todoID, endDate) => {
     const userRef = doc(db, "users", userID);
 
-    await updateDoc(userRef, {
-      [`toDoes.${todoID}`]: deleteField()
-    });
+    if (endDate) {
+      await updateDoc(userRef, {
+        completed: increment(-1),
+        [`toDoes.${todoID}`]: deleteField()
+      });
+    } else {
+      await updateDoc(userRef, {
+        [`toDoes.${todoID}`]: deleteField()
+      });
+    }
   };
 
   const updateToDo = async (userID, todo, text) => {
@@ -68,13 +75,13 @@ export default function useFirestore() {
     });
   };
 
-  const handleStatus = async (userID, todo, status, number) => {
+  const handleStatus = async (userID, todo, timeNow) => {
     const userRef = doc(db, "users", userID);
     await updateDoc(userRef, {
-      completed: increment(number),
+      completed: increment(1),
       [`toDoes.${todo.id}`]: {
         ...todo,
-        isDone: status
+        endDate: timeNow
       }
     });
   };
