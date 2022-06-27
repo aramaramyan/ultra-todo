@@ -4,7 +4,7 @@ import { setUsers } from "../../store/appSlice";
 import useFirestore from "../../services/useFirestore";
 import Modal from "../Modal/Modal";
 import UserItem from "../UserItem/UserItem";
-import AddUser from "../AddUser/AddUser";
+import AddUserContainer from "../AddUser/AddUserContainer";
 import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
 import Loader from "../Loader/Loader";
@@ -49,7 +49,7 @@ export default function Board() {
             )
           )}
         </div>
-        <AddUser />
+        <AddUserContainer />
       </div>
       {isModalOpen && <Modal />}
     </div>

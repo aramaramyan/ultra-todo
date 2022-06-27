@@ -5,9 +5,15 @@ const appSlice = createSlice({
   initialState: {
     users: [],
     currentUser: null,
+    todoInput: "",
+    addUserInput: "",
+    todoPlaceholder: "New to-do description",
+    addUserPlaceHolder: "Add new user",
     isModalOpen: false,
     isBoardLoading: false,
-    isModalLoading: false
+    isModalLoading: false,
+    isAddUserFieldOpen: false,
+    isAddTodoFieldOpen: false,
   },
   reducers: {
     setUsers(state, action) {
@@ -28,6 +34,24 @@ const appSlice = createSlice({
     },
     addUserLocal(state, action) {
       state.users.push(action.payload);
+    },
+    handleTodoInput(state, action) {
+      state.todoInput = action.payload;
+    },
+    handleAddUserInput(state, action) {
+      state.addUserInput = action.payload;
+    },
+    handleTodoPlaceholder(state, action) {
+      state.todoPlaceholder = action.payload;
+    },
+    handleAddUserPlaceholder(state, action) {
+      state.addUserPlaceHolder = action.payload;
+    },
+    toggleAddUserField(state, action) {
+      state.isAddUserFieldOpen = action.payload;
+    },
+    toggleAddTodoField(state, action) {
+      state.isAddTodoFieldOpen = action.payload;
     },
     setCurrentUser(state, action) {
       for (let i = 0; i < state.users.length; i++) {
@@ -139,9 +163,15 @@ export const {
   deleteToDoLocal,
   deleteUserLocal,
   updateToDoLocal,
+  handleTodoInput,
   removeCurrentUser,
   handleStatusLocal,
   handleBoardLoading,
-  handleModalLoading
+  handleModalLoading,
+  toggleAddUserField,
+  toggleAddTodoField,
+  handleAddUserInput,
+  handleTodoPlaceholder,
+  handleAddUserPlaceholder
 } = appSlice.actions;
 export default appSlice.reducer;

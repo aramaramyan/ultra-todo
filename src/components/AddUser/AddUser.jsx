@@ -1,71 +1,71 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import useFirestore from "../../services/useFirestore";
-import { addUserLocal, handleBoardLoading } from "../../store/appSlice";
-import getID from "../../helpers/getID";
+import { useRef } from "react";
+import { string, func, bool } from "prop-types";
 import checkIcon from "../../icons/check.svg";
 import plusIcon from "../../icons/plus.svg";
 import "./AddUser.scss";
 
-export default function AddUser() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [state, setState] = useState("");
-  const [placeHolder, setPlaceHolder] = useState("Add new user");
-  const inputRef = useRef(null);
-  const { addUser } = useFirestore();
-  const dispatch = useDispatch();
+export default function AddUser(props) {
+  const {
+    addUserInput,
+    isAddUserFieldOpen,
+    handleInput,
+    addUserPlaceHolder,
+    // handlePlaceholder,
+    toggleField
+  } = props;
 
-  function handleInput(evt) {
-    if (isOpen) {
-      setState(evt.target.value);
-    }
+  const inputRef = useRef(null);
+
+  function onInputChange(evt) {
+    handleInput(evt.target.value, isAddUserFieldOpen);
   }
 
   function handleOpen() {
-    setIsOpen((prev) => !prev);
+    toggleField(true);
     inputRef.current.focus();
   }
 
-  function submitUser(evt) {
-    evt.preventDefault();
-    if (state.trim()) {
-      setState("");
-      setPlaceHolder("Add new user");
-      const userID = getID();
-      dispatch(handleBoardLoading(true));
-
-      addUser(userID, state).then(() => {
-        const user = {
-          id: userID,
-          fullName: state,
-          toDoesArr: [],
-          completed: 0
-        };
-
-        dispatch(addUserLocal(user));
-        dispatch(handleBoardLoading(false));
-      });
-      handleOpen();
-    } else {
-      setPlaceHolder("Please fill the input");
-    }
-  }
+  // function submitUser(evt) {
+  //   evt.preventDefault();
+  //   if (state.trim()) {
+  //     setState("");
+  //     setPlaceHolder("Add new user");
+  //     const userID = getID();
+  //     dispatch(handleBoardLoading(true));
+  //
+  //     addUser(userID, state).then(() => {
+  //       const user = {
+  //         id: userID,
+  //         fullName: state,
+  //         toDoesArr: [],
+  //         completed: 0
+  //       };
+  //
+  //       dispatch(addUserLocal(user));
+  //       dispatch(handleBoardLoading(false));
+  //     });
+  //     handleOpen();
+  //   } else {
+  //     setPlaceHolder("Please fill the input");
+  //   }
+  // }
 
   return (
     <div className="add-user">
       <div className="add-user__input">
         <div className="input">
-          <form className={isOpen ? "input__field input-open title" : "input__field"} onSubmit={submitUser}>
+          <form className={isAddUserFieldOpen ? "input__field input-open title" : "input__field"}>
             <input
               ref={inputRef}
-              className={isOpen ? "input__field input-open title" : "input__field"}
+              className={isAddUserFieldOpen ? "input__field input-open title" : "input__field"}
               type="text"
-              value={state}
-              placeholder={placeHolder}
-              onChange={handleInput}
+              value={addUserInput}
+              placeholder={addUserPlaceHolder}
+              onChange={onInputChange}
             />
-            {isOpen ? (
-              <div className="input__button add-user__input_button" onClick={submitUser}>
+            {isAddUserFieldOpen ? (
+              // onClick={submitUser}
+              <div className="input__button add-user__input_button">
                 <img src={checkIcon} alt="Check Icon" />
               </div>
             ) : (
@@ -80,3 +80,19 @@ export default function AddUser() {
     </div>
   );
 }
+
+AddUser.defaultProps = {
+  addUserInput: "",
+  isAddUserFieldOpen: false,
+  addUserPlaceHolder: "",
+  handleInput: () => {},
+  toggleField: () => {},
+};
+
+AddUser.propTypes = {
+  addUserInput: string,
+  isAddUserFieldOpen: bool,
+  addUserPlaceHolder: string,
+  handleInput: func,
+  toggleField: func
+};
