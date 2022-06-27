@@ -1,9 +1,12 @@
 import { connect } from "react-redux";
 import {
+  // eslint-disable-next-line import/named
+  addUserThunk,
   handleAddUserInput,
   handleAddUserPlaceholder,
-  toggleAddUserField
+  toggleAddUserField,
 } from "../../store/appSlice";
+
 import AddUser from "./AddUser";
 
 function mapStateToProps(state) {
@@ -26,6 +29,9 @@ function mapDispatchToProps(dispatch) {
     },
     toggleField: (mode) => {
       dispatch(toggleAddUserField(mode));
+    },
+    addUser: (user) => {
+      dispatch(addUserThunk(user));
     }
   };
 }

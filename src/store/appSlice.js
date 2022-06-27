@@ -1,4 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import useFirestore from "../services/useFirestore";
+
+const { addUser } = useFirestore();
+
+export const addUserThunk = createAsyncThunk("addUser", ({ userID, fullName }) => {
+  addUser(userID, fullName);
+});
 
 const appSlice = createSlice({
   name: "app",
@@ -31,9 +38,6 @@ const appSlice = createSlice({
         });
         return ({ ...user, toDoesArr });
       });
-    },
-    addUserLocal(state, action) {
-      state.users.push(action.payload);
     },
     handleTodoInput(state, action) {
       state.todoInput = action.payload;
@@ -151,6 +155,29 @@ const appSlice = createSlice({
     handleModalLoading(state, action) {
       state.isModalLoading = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addUserThunk.pending, (state) => {
+      state.isBoardLoading = true;
+    });
+    builder.addCase(addUserThunk.fulfilled, (state, action) => {
+      state.isBoardLoading = false;
+      state.addUserInput = "";
+      state.isAddUserFieldOpen = false;
+      state.addUserPlaceHolder = "Add new user";
+
+      const user = {
+        id: action.meta.arg.userID,
+        fullName: action.meta.arg.fullName,
+        toDoesArr: [],
+        completed: 0
+      };
+
+      state.users = [...state.users, user];
+    });
+    builder.addCase(addUserThunk.rejected, (state) => {
+      state.isBoardLoading = false;
+    });
   }
 });
 
@@ -158,7 +185,6 @@ export const {
   setUsers,
   handleModal,
   addToDoLocal,
-  addUserLocal,
   setCurrentUser,
   deleteToDoLocal,
   deleteUserLocal,

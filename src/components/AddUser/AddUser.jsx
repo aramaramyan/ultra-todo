@@ -1,17 +1,19 @@
 import { useRef } from "react";
 import { string, func, bool } from "prop-types";
+import getID from "../../helpers/getID";
 import checkIcon from "../../icons/check.svg";
 import plusIcon from "../../icons/plus.svg";
 import "./AddUser.scss";
 
 export default function AddUser(props) {
   const {
-    addUserInput,
-    isAddUserFieldOpen,
+    addUser,
     handleInput,
+    toggleField,
+    addUserInput,
+    handlePlaceholder,
     addUserPlaceHolder,
-    // handlePlaceholder,
-    toggleField
+    isAddUserFieldOpen
   } = props;
 
   const inputRef = useRef(null);
@@ -25,30 +27,21 @@ export default function AddUser(props) {
     inputRef.current.focus();
   }
 
-  // function submitUser(evt) {
-  //   evt.preventDefault();
-  //   if (state.trim()) {
-  //     setState("");
-  //     setPlaceHolder("Add new user");
-  //     const userID = getID();
-  //     dispatch(handleBoardLoading(true));
-  //
-  //     addUser(userID, state).then(() => {
-  //       const user = {
-  //         id: userID,
-  //         fullName: state,
-  //         toDoesArr: [],
-  //         completed: 0
-  //       };
-  //
-  //       dispatch(addUserLocal(user));
-  //       dispatch(handleBoardLoading(false));
-  //     });
-  //     handleOpen();
-  //   } else {
-  //     setPlaceHolder("Please fill the input");
-  //   }
-  // }
+  function submitUser(evt) {
+    evt.preventDefault();
+
+    if (addUserInput.trim()) {
+      const userID = getID();
+      const payload = {
+        userID,
+        fullName: addUserInput
+      };
+
+      addUser(payload);
+    } else {
+      handlePlaceholder("Please fill the input");
+    }
+  }
 
   return (
     <div className="add-user">
@@ -64,8 +57,7 @@ export default function AddUser(props) {
               onChange={onInputChange}
             />
             {isAddUserFieldOpen ? (
-              // onClick={submitUser}
-              <div className="input__button add-user__input_button">
+              <div className="input__button add-user__input_button" onClick={submitUser}>
                 <img src={checkIcon} alt="Check Icon" />
               </div>
             ) : (
@@ -83,16 +75,20 @@ export default function AddUser(props) {
 
 AddUser.defaultProps = {
   addUserInput: "",
-  isAddUserFieldOpen: false,
   addUserPlaceHolder: "",
+  isAddUserFieldOpen: false,
   handleInput: () => {},
   toggleField: () => {},
+  addUser: () => {},
+  handlePlaceholder: () => {}
 };
 
 AddUser.propTypes = {
   addUserInput: string,
-  isAddUserFieldOpen: bool,
   addUserPlaceHolder: string,
+  isAddUserFieldOpen: bool,
   handleInput: func,
-  toggleField: func
+  toggleField: func,
+  addUser: func,
+  handlePlaceholder: func
 };
