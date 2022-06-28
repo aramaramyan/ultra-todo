@@ -8,7 +8,8 @@ const {
   addToDo,
   deleteUser,
   updateToDo,
-  handleStatus
+  handleStatus,
+  deleteToDo
 } = useFirestore();
 
 export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName }) => {
@@ -48,6 +49,10 @@ export const saveTodoThunk = createAsyncThunk("app/saveTodo", ({ userID, todo, t
 
 export const handleStatusThunk = createAsyncThunk("app/handleStatus", ({ userID, todo, endDate }) => {
   handleStatus(userID, todo, endDate);
+});
+
+export const deleteTodoThunk = createAsyncThunk("app/deleteTodo", ({ userID, todoID, endDate }) => {
+  deleteToDo(userID, todoID, endDate);
 });
 
 const appSlice = createSlice({
@@ -94,24 +99,6 @@ const appSlice = createSlice({
     },
     removeCurrentUser(state) {
       state.currentUser = null;
-    },
-    deleteToDoLocal(state, action) {
-      state.users = state.users.map((user) => {
-        if (user.id === action.payload.userID) {
-          if (action.payload.endDate) {
-            return {
-              ...user,
-              completed: user.completed - 1,
-              toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
-            };
-          }
-          return {
-            ...user,
-            toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
-          };
-        }
-        return user;
-      });
     },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
@@ -264,16 +251,40 @@ const appSlice = createSlice({
     builder.addCase(handleStatusThunk.rejected, (state) => {
       state.isModalLoading = false;
     });
+
+    builder.addCase(deleteTodoThunk.pending, (state) => {
+      state.isModalLoading = true;
+    });
+    builder.addCase(deleteTodoThunk.fulfilled, (state, action) => {
+      state.users = state.users.map((user) => {
+        if (user.id === action.meta.arg.userID) {
+          if (action.meta.arg.endDate) {
+            return {
+              ...user,
+              completed: user.completed - 1,
+              toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
+            };
+          }
+          return {
+            ...user,
+            toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
+          };
+        }
+        return user;
+      });
+      state.isModalLoading = false;
+    });
+    builder.addCase(deleteTodoThunk.rejected, (state) => {
+      state.isModalLoading = false;
+    });
   }
 });
 
 export const {
   handleModal,
   setCurrentUser,
-  deleteToDoLocal,
   handleTodoInput,
   removeCurrentUser,
-  handleStatusLocal,
   toggleAddUserField,
   toggleAddTodoField,
   handleAddUserInput,

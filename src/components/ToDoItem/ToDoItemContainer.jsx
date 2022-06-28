@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 import { string, object, func } from "prop-types";
-import { saveTodoThunk, handleStatusThunk } from "../../store/appSlice";
+import { saveTodoThunk, handleStatusThunk, deleteTodoThunk } from "../../store/appSlice";
 import ToDoItem from "./ToDoItem";
 import autoGrow from "../../helpers/autoGrow";
 
@@ -10,7 +10,8 @@ function ToDoItemContainer(props) {
     userID,
     todo,
     saveThunk,
-    changeStatusThunk
+    changeStatusThunk,
+    deleteThunk
   } = props;
 
   const { title, startDate, endDate } = todo;
@@ -55,6 +56,16 @@ function ToDoItemContainer(props) {
     changeStatusThunk(payload);
   }
 
+  function deleteTodo() {
+    const payload = {
+      userID,
+      todoID: todo.id,
+      endDate
+    };
+
+    deleteThunk(payload);
+  }
+
   return <ToDoItem
     startDate={startDate}
     endDate={endDate}
@@ -65,13 +76,8 @@ function ToDoItemContainer(props) {
     handleTextarea={handleTextarea}
     saveTodo={saveTodo}
     handleStatus={handleStatus}
+    deleteTodo={deleteTodo}
   />;
-}
-
-function mapStateToProps(state) {
-  return {
-
-  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -81,17 +87,21 @@ function mapDispatchToProps(dispatch) {
     },
     changeStatusThunk: (payload) => {
       dispatch(handleStatusThunk(payload));
+    },
+    deleteThunk: (payload) => {
+      dispatch(deleteTodoThunk(payload));
     }
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToDoItemContainer);
+export default connect(null, mapDispatchToProps)(ToDoItemContainer);
 
 ToDoItemContainer.defaultProps = {
   userID: "",
   todo: {},
   saveThunk: () => {},
   changeStatusThunk: () => {},
+  deleteThunk: () => {},
 };
 
 ToDoItemContainer.propTypes = {
@@ -99,4 +109,5 @@ ToDoItemContainer.propTypes = {
   todo: object,
   saveThunk: func,
   changeStatusThunk: func,
+  deleteThunk: func,
 };

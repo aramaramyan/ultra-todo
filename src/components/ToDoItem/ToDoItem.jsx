@@ -19,7 +19,8 @@ export default function ToDoItem(props) {
     editTodo,
     handleTextarea,
     saveTodo,
-    handleStatus
+    handleStatus,
+    deleteTodo
   } = props;
 
   const textAreaRef = useRef(null);
@@ -31,35 +32,6 @@ export default function ToDoItem(props) {
   function onEdit() {
     editTodo(textAreaRef);
   }
-
-  // function markAsDone() {
-  //   const timeNow = Date.now();
-  //   dispatch(handleModalLoading(true));
-  //   handleStatus(userID, todo, timeNow).then(() => {
-  //     const payload = {
-  //       userID,
-  //       todoID: todo.id,
-  //       endDate: timeNow
-  //     };
-  //
-  //     dispatch(handleStatusLocal(payload));
-  //     dispatch(handleModalLoading(false));
-  //   });
-  // }
-
-  // function delToDo() {
-  //   dispatch(handleModalLoading(true));
-  //   deleteToDo(userID, todo.id, endDate).then(() => {
-  //     const payload = {
-  //       userID,
-  //       todoID: todo.id,
-  //       endDate
-  //     };
-  //
-  //     dispatch(deleteToDoLocal(payload));
-  //     dispatch(handleModalLoading(false));
-  //   });
-  // }
 
   return (
     <div className="todo">
@@ -108,7 +80,7 @@ export default function ToDoItem(props) {
             <img src={saveIcon} alt="Save Icon" />
           </div>
         )}
-        <div className="todo__header_delete">
+        <div className="todo__header_delete" onClick={deleteTodo}>
           <img src={closeIcon} alt="Close Icon" />
         </div>
       </div>
@@ -126,6 +98,7 @@ ToDoItem.defaultProps = {
   handleTextarea: () => {},
   saveTodo: () => {},
   handleStatus: () => {},
+  deleteTodo: () => {},
 };
 
 ToDoItem.propTypes = {
@@ -138,4 +111,5 @@ ToDoItem.propTypes = {
   handleTextarea: func,
   saveTodo: func,
   handleStatus: func,
+  deleteTodo: func,
 };
