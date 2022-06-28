@@ -36,13 +36,15 @@ function ToDoItemContainer(props) {
   }
 
   function saveTodo() {
-    const updatedTodo = {
-      userID,
-      todo,
-      title: textareaState
-    };
+    if (textareaState.trim()) {
+      const updatedTodo = {
+        userID,
+        todo,
+        title: textareaState
+      };
 
-    saveThunk(updatedTodo);
+      saveThunk(updatedTodo);
+    }
   }
 
   function handleStatus() {
