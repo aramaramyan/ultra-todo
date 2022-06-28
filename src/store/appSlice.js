@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import useFirestore from "../services/useFirestore";
 import getID from "../helpers/getID";
 
-const { addUser, getUsers, addToDo } = useFirestore();
+const { addUser, getUsers, addToDo, deleteUser } = useFirestore();
 
 export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName }) => {
   addUser(userID, fullName);
@@ -23,6 +23,10 @@ export const addTodoThunk = createAsyncThunk("app/addTodo", ({ userID, todoInput
 
   addToDo(userID, todo, toDoesObj);
   return todo;
+});
+
+export const deleteUserThunk = createAsyncThunk("app/deleteUser", ({ userID }) => {
+  deleteUser(userID);
 });
 
 const appSlice = createSlice({
@@ -69,9 +73,6 @@ const appSlice = createSlice({
     },
     removeCurrentUser(state) {
       state.currentUser = null;
-    },
-    deleteUserLocal(state, action) {
-      state.users = state.users.filter((user) => user.id !== action.payload);
     },
     updateToDoLocal(state, action) {
       state.users = state.users.map((user) => {
@@ -216,6 +217,21 @@ const appSlice = createSlice({
     builder.addCase(addTodoThunk.rejected, (state) => {
       state.isModalLoading = false;
     });
+
+    builder.addCase(deleteUserThunk.pending, (state) => {
+      state.isBoardLoading = true;
+    });
+    builder.addCase(deleteUserThunk.fulfilled, (state, action) => {
+      console.log(`:::action:::`, action);
+      state = {
+        ...state,
+        users: state.users.filter((user) => user.id !== action.payload),
+        isBoardLoading: false
+      };
+    });
+    builder.addCase(deleteUserThunk.rejected, (state) => {
+      state.isBoardLoading = false;
+    });
   }
 });
 
@@ -223,7 +239,6 @@ export const {
   handleModal,
   setCurrentUser,
   deleteToDoLocal,
-  deleteUserLocal,
   updateToDoLocal,
   handleTodoInput,
   removeCurrentUser,

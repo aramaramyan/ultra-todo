@@ -1,6 +1,6 @@
 import { array, bool } from "prop-types";
 import AddUserContainer from "../AddUser/AddUserContainer";
-import Modal from "../Modal/Modal";
+import ModalContainer from "../Modal/ModalContainer";
 import UserItem from "../UserItem/UserItem";
 import Loader from "../Loader/Loader";
 import banIcon from "../../icons/ban.svg";
@@ -36,7 +36,7 @@ export default function Board({ users, isModalOpen, isBoardLoading }) {
         </div>
         <AddUserContainer />
       </div>
-      {isModalOpen && <Modal />}
+      {isModalOpen && <ModalContainer />}
     </div>
   );
 }

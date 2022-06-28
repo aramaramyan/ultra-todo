@@ -1,6 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
-import { handleModal, removeCurrentUser, deleteUserLocal, handleBoardLoading } from "../../store/appSlice";
-import useFirestore from "../../services/useFirestore";
+import { object, bool, func } from "prop-types";
 import InputContainer from "../Input/InputContainer";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import Loader from "../Loader/Loader";
@@ -8,26 +6,13 @@ import closeIcon from "../../icons/close.svg";
 import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
 
-export default function Modal() {
-  const currentUserIndex = useSelector((state) => state.app.currentUser);
-  const currentUser = useSelector((state) => state.app.users[currentUserIndex]);
-  const isModalLoading = useSelector((state) => state.app.isModalLoading);
-  const { deleteUser } = useFirestore();
-  const dispatch = useDispatch();
-
-  function closeModal() {
-    dispatch(handleModal(false));
-    dispatch(removeCurrentUser());
-  }
-
-  function delUser() {
-    dispatch(handleBoardLoading(true));
-    deleteUser(currentUser.id).then(() => {
-      dispatch(deleteUserLocal(currentUser.id));
-      dispatch(handleBoardLoading(false));
-    });
-    closeModal();
-  }
+export default function Modal(props) {
+  const {
+    currentUser,
+    isModalLoading,
+    closeModal,
+    deleteUser
+  } = props;
 
   return (
     <div className="modal">
@@ -48,7 +33,7 @@ export default function Modal() {
       </div>
       <div className="modal__current-user">
         <p className="modal__current-user_title title">To-do list for {currentUser.fullName}</p>
-        <div className="modal__current-user_delete" onClick={delUser}>
+        <div className="modal__current-user_delete" onClick={deleteUser}>
           <p>Delete User</p>
           <img src={deleteUserIcon} alt="Delete User Icon" />
         </div>
@@ -69,3 +54,17 @@ export default function Modal() {
     </div>
   );
 }
+
+Modal.defaultProps = {
+  currentUser: {},
+  isModalLoading: false,
+  closeModal: () => {},
+  deleteUser: () => {}
+};
+
+Modal.propTypes = {
+  currentUser: object,
+  isModalLoading: bool,
+  closeModal: func,
+  deleteUser: func
+};
