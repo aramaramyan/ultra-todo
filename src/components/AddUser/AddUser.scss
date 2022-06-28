@@ -11,7 +11,7 @@
     width: 500px;
 
     &_button {
-      background: getColor("green");
+      background: getColor("green") !important;
     }
   }
 }

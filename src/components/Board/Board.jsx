@@ -1,7 +1,7 @@
 import { array, bool } from "prop-types";
 import AddUserContainer from "../AddUser/AddUserContainer";
 import ModalContainer from "../Modal/ModalContainer";
-import UserItem from "../UserItem/UserItem";
+import UserItemContainer from "../UserItem/UserItemContainer";
 import Loader from "../Loader/Loader";
 import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
@@ -19,7 +19,7 @@ export default function Board({ users, isModalOpen, isBoardLoading }) {
         <div className="board__list">
           {isBoardLoading ? <Loader /> : (
             users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
-              <UserItem
+              <UserItemContainer
                 key={id}
                 id={id}
                 fullName={fullName}
