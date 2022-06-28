@@ -41,6 +41,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(removeCurrentUser());
     },
     delUserThunk: (userID) => {
+      console.log(`:::userID:::`, userID);
       dispatch(deleteUserThunk(userID));
     }
   };

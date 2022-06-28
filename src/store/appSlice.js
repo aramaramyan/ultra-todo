@@ -25,7 +25,7 @@ export const addTodoThunk = createAsyncThunk("app/addTodo", ({ userID, todoInput
   return todo;
 });
 
-export const deleteUserThunk = createAsyncThunk("app/deleteUser", ({ userID }) => {
+export const deleteUserThunk = createAsyncThunk("app/deleteUser", (userID) => {
   deleteUser(userID);
 });
 
@@ -222,12 +222,9 @@ const appSlice = createSlice({
       state.isBoardLoading = true;
     });
     builder.addCase(deleteUserThunk.fulfilled, (state, action) => {
-      console.log(`:::action:::`, action);
-      state = {
-        ...state,
-        users: state.users.filter((user) => user.id !== action.payload),
-        isBoardLoading: false
-      };
+      state.users = state.users.filter((user) => user.id !== action.meta.arg);
+      state.isModalOpen = false;
+      state.isisBoardLoading = false;
     });
     builder.addCase(deleteUserThunk.rejected, (state) => {
       state.isBoardLoading = false;
