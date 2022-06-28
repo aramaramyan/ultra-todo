@@ -61,6 +61,7 @@
     "no-unused-vars": "off",
     "no-param-reassign": "off",
     "no-plusplus": "off",
-    "no-else-return": "off"
+    "no-else-return": "off",
+    "react/jsx-no-bind": "off"
   }
 }

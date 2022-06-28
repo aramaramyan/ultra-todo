@@ -1,63 +1,39 @@
-import { useCallback, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { string, array } from "prop-types";
-import { addToDoLocal, handleModalLoading } from "../../store/appSlice";
-import getID from "../../helpers/getID";
-import getUserObjFromArr from "../../helpers/getUserObjFromArr";
-import useFirestore from "../../services/useFirestore";
+import { useRef } from "react";
+import { string, bool, func } from "prop-types";
 import plusIcon from "../../icons/plus.svg";
 import checkIcon from "../../icons/check.svg";
 import "./Input.scss";
 
-export default function Input({ userID, allToDoes }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [state, setState] = useState("");
-  const [placeHolder, setPlaceHolder] = useState("New to-do description");
+export default function Input(props) {
+  const {
+    todoInput,
+    todoPlaceholder,
+    isAddTodoFieldOpen,
+    handleInput,
+    toggleInputField,
+    changePlaceholder,
+    addTodo
+  } = props;
+
   const inputRef = useRef(null);
-  const dispatch = useDispatch();
-  const { addToDo } = useFirestore();
 
-  const toDoesObj = useCallback(() => {
-    return getUserObjFromArr(allToDoes);
-  }, [allToDoes.length]);
-
-  function handleInput(evt) {
-    if (isOpen) {
-      setState(evt.target.value);
+  function onInputChange(evt) {
+    if (isAddTodoFieldOpen) {
+      handleInput(evt.target.value);
     }
   }
 
-  function handleOpen() {
-    setIsOpen((prev) => !prev);
+  function openInputField() {
+    toggleInputField(true);
     inputRef.current.focus();
   }
 
   function submitToDo(evt) {
     evt.preventDefault();
-    if (state.trim()) {
-      const todo = {
-        id: getID(),
-        title: state,
-        startDate: Date.now(),
-        endDate: 0
-      };
-
-      setState("");
-      setPlaceHolder("New to-do description");
-
-      dispatch(handleModalLoading(true));
-      addToDo(userID, todo, toDoesObj()).then(() => {
-        const payload = {
-          userID,
-          todo
-        };
-
-        dispatch(addToDoLocal(payload));
-        dispatch(handleModalLoading(false));
-      });
-      handleOpen();
+    if (todoInput.trim()) {
+      addTodo();
     } else {
-      setPlaceHolder("Please fill the input");
+      changePlaceholder("Please fill the input");
     }
   }
 
@@ -66,18 +42,18 @@ export default function Input({ userID, allToDoes }) {
       <form onSubmit={submitToDo}>
         <input
           ref={inputRef}
-          className={isOpen ? "input__field input-open title" : "input__field"}
+          className={isAddTodoFieldOpen ? "input__field input-open title" : "input__field"}
           type="text"
-          value={state}
-          placeholder={placeHolder}
-          onChange={handleInput}
+          value={todoInput}
+          placeholder={todoPlaceholder}
+          onChange={onInputChange}
         />
-        {isOpen ? (
+        {isAddTodoFieldOpen ? (
           <div className="input__button" onClick={submitToDo}>
             <img src={checkIcon} alt="Check Icon" />
           </div>
         ) : (
-          <div className="input__button" onClick={handleOpen}>
+          <div className="input__button" onClick={openInputField}>
             <img src={plusIcon} alt="Plus Icon" />
           </div>
         )}
@@ -87,11 +63,21 @@ export default function Input({ userID, allToDoes }) {
 }
 
 Input.defaultProps = {
-  userID: "",
-  allToDoes: {},
+  todoInput: "",
+  todoPlaceholder: "",
+  isAddTodoFieldOpen: false,
+  handleInput: () => {},
+  toggleInputField: () => {},
+  changePlaceholder: () => {},
+  addTodo: () => {}
 };
 
 Input.propTypes = {
-  userID: string,
-  allToDoes: array,
+  todoInput: string,
+  todoPlaceholder: string,
+  isAddTodoFieldOpen: bool,
+  handleInput: func,
+  toggleInputField: func,
+  changePlaceholder: func,
+  addTodo: func
 };

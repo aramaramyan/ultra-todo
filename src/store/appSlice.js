@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import useFirestore from "../services/useFirestore";
+import getID from "../helpers/getID";
 
-const { addUser, getUsers } = useFirestore();
+const { addUser, getUsers, addToDo } = useFirestore();
 
 export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName }) => {
   addUser(userID, fullName);
@@ -10,6 +11,18 @@ export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName 
 export const getUsersThunk = createAsyncThunk("app/getUsers", async () => {
   const response = await getUsers();
   return response;
+});
+
+export const addTodoThunk = createAsyncThunk("app/addTodo", ({ userID, todoInput, toDoesObj }) => {
+  const todo = {
+    id: getID(),
+    title: todoInput,
+    startDate: Date.now(),
+    endDate: 0
+  };
+
+  addToDo(userID, todo, toDoesObj);
+  return todo;
 });
 
 const appSlice = createSlice({
@@ -59,17 +72,6 @@ const appSlice = createSlice({
     },
     deleteUserLocal(state, action) {
       state.users = state.users.filter((user) => user.id !== action.payload);
-    },
-    addToDoLocal(state, action) {
-      state.users = state.users.map((user) => {
-        if (user.id === action.payload.userID) {
-          return {
-            ...user,
-            toDoesArr: [action.payload.todo, ...user.toDoesArr]
-          };
-        }
-        return user;
-      });
     },
     updateToDoLocal(state, action) {
       state.users = state.users.map((user) => {
@@ -192,12 +194,33 @@ const appSlice = createSlice({
     builder.addCase(getUsersThunk.rejected, (state) => {
       state.isBoardLoading = false;
     });
+
+    builder.addCase(addTodoThunk.pending, (state) => {
+      state.isModalLoading = true;
+    });
+    builder.addCase(addTodoThunk.fulfilled, (state, action) => {
+      state.users = state.users.map((user) => {
+        if (user.id === action.meta.arg.userID) {
+          return {
+            ...user,
+            toDoesArr: [action.payload, ...user.toDoesArr]
+          };
+        }
+        return user;
+      });
+
+      state.isModalLoading = false;
+      state.todoInput = "";
+      state.todoPlaceholder = "New to-do description";
+    });
+    builder.addCase(addTodoThunk.rejected, (state) => {
+      state.isModalLoading = false;
+    });
   }
 });
 
 export const {
   handleModal,
-  addToDoLocal,
   setCurrentUser,
   deleteToDoLocal,
   deleteUserLocal,

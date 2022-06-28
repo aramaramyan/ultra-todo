@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { handleModal, removeCurrentUser, deleteUserLocal, handleBoardLoading } from "../../store/appSlice";
 import useFirestore from "../../services/useFirestore";
-import Input from "../Input/Input";
+import InputContainer from "../Input/InputContainer";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import Loader from "../Loader/Loader";
 import closeIcon from "../../icons/close.svg";
@@ -32,7 +32,7 @@ export default function Modal() {
   return (
     <div className="modal">
       <div className="modal__header">
-        <Input
+        <InputContainer
           userID={currentUser.id}
           allToDoes={currentUser.toDoesArr}
         />
