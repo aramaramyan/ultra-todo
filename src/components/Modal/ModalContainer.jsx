@@ -15,7 +15,7 @@ function ModalContainer(props) {
   const currentUser = users[currentUserIndex];
 
   function deleteUser() {
-    deleteUserThunk(currentUser.id);
+    delUserThunk(currentUser.id);
   }
 
   return <Modal
@@ -46,7 +46,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect()(ModalContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalContainer);
 
 ModalContainer.defaultProps = {
   users: [],
