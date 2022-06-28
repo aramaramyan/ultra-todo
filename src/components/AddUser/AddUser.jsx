@@ -47,7 +47,7 @@ export default function AddUser(props) {
     <div className="add-user">
       <div className="add-user__input">
         <div className="input">
-          <form className={isAddUserFieldOpen ? "input__field input-open title" : "input__field"}>
+          <form className={isAddUserFieldOpen ? "input__field input-open title" : "input__field"} onSubmit={submitUser}>
             <input
               ref={inputRef}
               className={isAddUserFieldOpen ? "input__field input-open title" : "input__field"}

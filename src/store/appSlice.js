@@ -1,10 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import useFirestore from "../services/useFirestore";
 
-const { addUser } = useFirestore();
+const { addUser, getUsers } = useFirestore();
 
-export const addUserThunk = createAsyncThunk("addUser", ({ userID, fullName }) => {
+export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName }) => {
   addUser(userID, fullName);
+});
+
+export const getUsersThunk = createAsyncThunk("app/getUsers", async () => {
+  const response = await getUsers();
+  return response;
 });
 
 const appSlice = createSlice({
@@ -23,22 +28,6 @@ const appSlice = createSlice({
     isAddTodoFieldOpen: false,
   },
   reducers: {
-    setUsers(state, action) {
-      state.users = action.payload.map((item) => {
-        const { toDoes, ...user } = item;
-        const toDoesArr = Object.keys(toDoes).map((key) => {
-          return ({ ...toDoes[key], id: key });
-        }).sort((a, b) => {
-            return a.endDate - b.endDate;
-        }).sort((a, b) => {
-          if (a.endDate === 0 && b.endDate === 0) {
-            return b.startDate - a.startDate;
-          }
-          return 0;
-        });
-        return ({ ...user, toDoesArr });
-      });
-    },
     handleTodoInput(state, action) {
       state.todoInput = action.payload;
     },
@@ -178,11 +167,35 @@ const appSlice = createSlice({
     builder.addCase(addUserThunk.rejected, (state) => {
       state.isBoardLoading = false;
     });
+
+    builder.addCase(getUsersThunk.pending, (state) => {
+      state.isBoardLoading = true;
+    });
+    builder.addCase(getUsersThunk.fulfilled, (state, action) => {
+      state.isBoardLoading = false;
+
+      state.users = action.payload.map((item) => {
+        const { toDoes, ...user } = item;
+        const toDoesArr = Object.keys(toDoes).map((key) => {
+          return ({ ...toDoes[key], id: key });
+        }).sort((a, b) => {
+          return a.endDate - b.endDate;
+        }).sort((a, b) => {
+          if (a.endDate === 0 && b.endDate === 0) {
+            return b.startDate - a.startDate;
+          }
+          return 0;
+        });
+        return ({ ...user, toDoesArr });
+      });
+    });
+    builder.addCase(getUsersThunk.rejected, (state) => {
+      state.isBoardLoading = false;
+    });
   }
 });
 
 export const {
-  setUsers,
   handleModal,
   addToDoLocal,
   setCurrentUser,

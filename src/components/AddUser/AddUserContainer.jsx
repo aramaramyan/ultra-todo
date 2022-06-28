@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import {
-  // eslint-disable-next-line import/named
   addUserThunk,
   handleAddUserInput,
   handleAddUserPlaceholder,

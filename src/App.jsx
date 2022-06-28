@@ -1,5 +1,5 @@
-import Board from "./components/Board/Board";
 import useWindowSize from "./hooks/useWindowSize";
+import BoardContainer from "./components/Board/BoardContainer";
 import Info from "./components/Info/Info";
 import './App.scss';
 
@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <div className="App">
-      {windowWidth > 1200 ? <Board /> : <Info />}
+      {windowWidth > 1200 ? <BoardContainer /> : <Info />}
     </div>
   );
 }

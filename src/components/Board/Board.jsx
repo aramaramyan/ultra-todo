@@ -1,27 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUsers } from "../../store/appSlice";
-import useFirestore from "../../services/useFirestore";
+import { array, bool } from "prop-types";
+import AddUserContainer from "../AddUser/AddUserContainer";
 import Modal from "../Modal/Modal";
 import UserItem from "../UserItem/UserItem";
-import AddUserContainer from "../AddUser/AddUserContainer";
+import Loader from "../Loader/Loader";
 import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
-import Loader from "../Loader/Loader";
 
-export default function Board() {
-  const users = useSelector((state) => state.app.users);
-  const isModalOpen = useSelector((state) => state.app.isModalOpen);
-  const isBoardLoading = useSelector((state) => state.app.isBoardLoading);
-  const { getUsers } = useFirestore();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    getUsers().then((res) => {
-      dispatch(setUsers(res));
-    });
-  }, []);
-
+export default function Board({ users, isModalOpen, isBoardLoading }) {
   return (
     <div className="board">
       <div className={isModalOpen ? "board__body modal-open" : "board__body"}>
@@ -55,3 +40,15 @@ export default function Board() {
     </div>
   );
 }
+
+Board.defaultProps = {
+  users: [],
+  isModalOpen: false,
+  isBoardLoading: false,
+};
+
+Board.propTypes = {
+  users: array,
+  isModalOpen: bool,
+  isBoardLoading: bool,
+};
