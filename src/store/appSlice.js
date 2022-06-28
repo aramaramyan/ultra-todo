@@ -2,7 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import useFirestore from "../services/useFirestore";
 import getID from "../helpers/getID";
 
-const { addUser, getUsers, addToDo, deleteUser } = useFirestore();
+const {
+  addUser,
+  getUsers,
+  addToDo,
+  deleteUser,
+  updateToDo,
+  handleStatus
+} = useFirestore();
 
 export const addUserThunk = createAsyncThunk("app/addUser", ({ userID, fullName }) => {
   addUser(userID, fullName);
@@ -27,6 +34,20 @@ export const addTodoThunk = createAsyncThunk("app/addTodo", ({ userID, todoInput
 
 export const deleteUserThunk = createAsyncThunk("app/deleteUser", (userID) => {
   deleteUser(userID);
+});
+
+export const saveTodoThunk = createAsyncThunk("app/saveTodo", ({ userID, todo, title }) => {
+  updateToDo(userID, todo, title);
+
+  return {
+    userID,
+    todo,
+    title
+  };
+});
+
+export const handleStatusThunk = createAsyncThunk("app/handleStatus", ({ userID, todo, endDate }) => {
+  handleStatus(userID, todo, endDate);
 });
 
 const appSlice = createSlice({
@@ -74,25 +95,6 @@ const appSlice = createSlice({
     removeCurrentUser(state) {
       state.currentUser = null;
     },
-    updateToDoLocal(state, action) {
-      state.users = state.users.map((user) => {
-        if (user.id === action.payload.userID) {
-          return {
-            ...user,
-            toDoesArr: user.toDoesArr.map((todo) => {
-              if (todo.id === action.payload.todoID) {
-                return {
-                  ...todo,
-                  title: action.payload.title
-                };
-              }
-              return todo;
-            })
-          };
-        }
-        return user;
-      });
-    },
     deleteToDoLocal(state, action) {
       state.users = state.users.map((user) => {
         if (user.id === action.payload.userID) {
@@ -111,38 +113,8 @@ const appSlice = createSlice({
         return user;
       });
     },
-    handleStatusLocal(state, action) {
-      state.users = state.users.map((user) => {
-        if (user.id === action.payload.userID) {
-          return {
-            ...user,
-            completed: user.completed + 1,
-            toDoesArr: user.toDoesArr.map((todo) => {
-              if (todo.id === action.payload.todoID) {
-                return {
-                  ...todo,
-                  endDate: action.payload.endDate
-                };
-              }
-              return todo;
-            }).sort((a, b) => {
-              return a.endDate - b.endDate;
-            }).sort((a, b) => {
-              if (a.endDate === 0 && b.endDate === 0) {
-                return b.startDate - a.startDate;
-              }
-              return 0;
-            })
-          };
-        }
-        return user;
-      });
-    },
     handleModal(state, action) {
       state.isModalOpen = action.payload;
-    },
-    handleBoardLoading(state, action) {
-      state.isBoardLoading = action.payload;
     },
     handleModalLoading(state, action) {
       state.isModalLoading = action.payload;
@@ -211,6 +183,7 @@ const appSlice = createSlice({
       });
 
       state.isModalLoading = false;
+      state.isAddTodoFieldOpen = false;
       state.todoInput = "";
       state.todoPlaceholder = "New to-do description";
     });
@@ -229,6 +202,68 @@ const appSlice = createSlice({
     builder.addCase(deleteUserThunk.rejected, (state) => {
       state.isBoardLoading = false;
     });
+
+    builder.addCase(saveTodoThunk.pending, (state) => {
+      state.isModalLoading = true;
+    });
+    builder.addCase(saveTodoThunk.fulfilled, (state, action) => {
+      state.users = state.users.map((user) => {
+        if (user.id === action.meta.arg.userID) {
+          return {
+            ...user,
+            toDoesArr: user.toDoesArr.map((todo) => {
+              if (todo.id === action.meta.arg.todo.id) {
+                return {
+                  ...todo,
+                  title: action.meta.arg.title
+                };
+              }
+              return todo;
+            })
+          };
+        }
+        return user;
+      });
+      state.isModalLoading = false;
+    });
+    builder.addCase(saveTodoThunk.rejected, (state) => {
+      state.isModalLoading = false;
+    });
+
+    builder.addCase(handleStatusThunk.pending, (state) => {
+      state.isModalLoading = true;
+    });
+    builder.addCase(handleStatusThunk.fulfilled, (state, action) => {
+      state.users = state.users.map((user) => {
+        if (user.id === action.meta.arg.userID) {
+          return {
+            ...user,
+            completed: user.completed + 1,
+            toDoesArr: user.toDoesArr.map((todo) => {
+              if (todo.id === action.meta.arg.todo.id) {
+                return {
+                  ...todo,
+                  endDate: action.meta.arg.endDate
+                };
+              }
+              return todo;
+            }).sort((a, b) => {
+              return a.endDate - b.endDate;
+            }).sort((a, b) => {
+              if (a.endDate === 0 && b.endDate === 0) {
+                return b.startDate - a.startDate;
+              }
+              return 0;
+            })
+          };
+        }
+        return user;
+      });
+      state.isModalLoading = false;
+    });
+    builder.addCase(handleStatusThunk.rejected, (state) => {
+      state.isModalLoading = false;
+    });
   }
 });
 
@@ -236,12 +271,9 @@ export const {
   handleModal,
   setCurrentUser,
   deleteToDoLocal,
-  updateToDoLocal,
   handleTodoInput,
   removeCurrentUser,
   handleStatusLocal,
-  handleBoardLoading,
-  handleModalLoading,
   toggleAddUserField,
   toggleAddTodoField,
   handleAddUserInput,

@@ -5,6 +5,7 @@ import Loader from "../Loader/Loader";
 import closeIcon from "../../icons/close.svg";
 import deleteUserIcon from "../../icons/delleteUser.svg";
 import "./Modal.scss";
+import ToDoItemContainer from "../ToDoItem/ToDoItemContainer";
 
 export default function Modal(props) {
   const {
@@ -42,7 +43,7 @@ export default function Modal(props) {
         {isModalLoading ? <Loader /> : (
           currentUser.toDoesArr.map((todo) => {
             return (
-              <ToDoItem
+              <ToDoItemContainer
                 key={todo.id}
                 userID={currentUser.id}
                 todo={todo}
