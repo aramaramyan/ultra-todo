@@ -1,27 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUsers } from "../../store/appSlice";
-import useFirestore from "../../services/useFirestore";
-import Modal from "../Modal/Modal";
-import UserItem from "../UserItem/UserItem";
-import AddUser from "../AddUser/AddUser";
+import { array, bool } from "prop-types";
+import AddUserContainer from "../AddUser/AddUserContainer";
+import ModalContainer from "../Modal/ModalContainer";
+import UserItemContainer from "../UserItem/UserItemContainer";
+import Loader from "../Loader/Loader";
 import banIcon from "../../icons/ban.svg";
 import "./Board.scss";
-import Loader from "../Loader/Loader";
 
-export default function Board() {
-  const users = useSelector((state) => state.app.users);
-  const isModalOpen = useSelector((state) => state.app.isModalOpen);
-  const isBoardLoading = useSelector((state) => state.app.isBoardLoading);
-  const { getUsers } = useFirestore();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    getUsers().then((res) => {
-      dispatch(setUsers(res));
-    });
-  }, []);
-
+export default function Board({ users, isModalOpen, isBoardLoading }) {
   return (
     <div className="board">
       <div className={isModalOpen ? "board__body modal-open" : "board__body"}>
@@ -34,7 +19,7 @@ export default function Board() {
         <div className="board__list">
           {isBoardLoading ? <Loader /> : (
             users.length ? users.map(({ id, fullName, completed, toDoesArr }, i) => (
-              <UserItem
+              <UserItemContainer
                 key={id}
                 id={id}
                 fullName={fullName}
@@ -49,9 +34,21 @@ export default function Board() {
             )
           )}
         </div>
-        <AddUser />
+        <AddUserContainer />
       </div>
-      {isModalOpen && <Modal />}
+      {isModalOpen && <ModalContainer />}
     </div>
   );
 }
+
+Board.defaultProps = {
+  users: [],
+  isModalOpen: false,
+  isBoardLoading: false,
+};
+
+Board.propTypes = {
+  users: array,
+  isModalOpen: bool,
+  isBoardLoading: bool,
+};

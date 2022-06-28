@@ -11,7 +11,7 @@
   width: 500px;
 }
 .add-user__input_button {
-  background: #03BC90;
+  background: #03BC90 !important;
 }
 
 /*# sourceMappingURL=AddUser.css.map */
