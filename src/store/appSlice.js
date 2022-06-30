@@ -262,12 +262,12 @@ const appSlice = createSlice({
             return {
               ...user,
               completed: user.completed - 1,
-              toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
+              toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.meta.arg.todoID)
             };
           }
           return {
             ...user,
-            toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.payload.todoID)
+            toDoesArr: user.toDoesArr.filter((todo) => todo.id !== action.meta.arg.todoID)
           };
         }
         return user;
