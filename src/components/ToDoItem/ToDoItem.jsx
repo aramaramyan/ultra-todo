@@ -8,6 +8,7 @@ import closeIcon from "../../icons/close.svg";
 import editIcon from "../../icons/pencil.svg";
 import saveIcon from "../../icons/save.svg";
 import "./ToDoItem.scss";
+import autoGrow from "../../helpers/autoGrow";
 
 export default function ToDoItem(props) {
   const {

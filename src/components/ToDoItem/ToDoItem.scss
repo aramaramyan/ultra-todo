@@ -5,7 +5,6 @@
   position: relative;
   @include flexRow(space-between, center);
   width: 100%;
-  min-height: 87px;
   padding: 16px;
   border-radius: 24px;
   background: getColor("white");
@@ -18,6 +17,7 @@
 
     textarea {
       width: 100%;
+      min-height: 21px;
       padding-left: 5px;
       resize: none;
       outline: 0 none transparent;
